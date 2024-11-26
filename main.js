@@ -1,15 +1,20 @@
-const { app, BrowserWindow, Menu, shell, ipcMain } = require('electron/main')
+const { app, BrowserWindow, Menu, shell, ipcMain, dialog } = require('electron/main')
 const path = require('node:path')
 
 // Importação do módulo de conexão
-const {dbConnect, desconectar} = require('./database.js')
-// Status de conexão com o banco de dados - No MongoDB é mais eficiente ter apenas uma conexão aberta durante todo o tempo de vida do aplicativo e usá-la
-// quando necessário. Fechar e reabrir constantemente a conexão aumenta a sobrecarga e reduz o desempenho 
-// A variável abaixo é usada para garantir que o banco de dados inicie desonectado (evita abrir outra instância)
+const { dbConnect, desconectar } = require('./database.js')
+// status de conexão com o banco. No MongoDB é mais eficiente manter uma única conexão aberta durante todo o tempo de vida do aplicativo e usá-la quando necessário. Fechar e reabrir constantemente a conexão aumenta a sobrecarga e reduz o desempenho do servidor.
+// a variável abaixo é usada para garantir que o banco de dados inicie desconectado (evitar abrir outra instância)
 let dbcon = null
 
-// Importação do Schema Clientes da camada model
+// importação do Schema Clientes da camada model
 const clienteModel = require('./src/models/Clientes.js')
+
+const fornecedorModel = require('./src/models/Fornecedores.js')
+
+const produtoModel = require('./src/models/Produtos.js')
+
+
 
 // janela principal
 let win
@@ -22,7 +27,8 @@ function createWindow() {
         }
     })
 
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+    // Menu personalizado (comentar para debugar)
+    //Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 
     win.loadFile('./src/views/index.html')
 
@@ -80,7 +86,7 @@ function clientWindow() {
         client = new BrowserWindow({
             width: 800,
             height: 600,
-            autoHideMenuBar: true,
+            //autoHideMenuBar: true,
             parent: main,
             modal: true,
             webPreferences: {
@@ -150,21 +156,21 @@ function reportWindow() {
 
 app.whenReady().then(() => {
     createWindow()
+    // Melhor local para estabelecer a conexão com o banco de dados
+    // Importar antes o módulo de conexão no início do código
 
-    // Melhor local para estabelecer a conexão com o banco de dados 
-    // Conexão com o banco
-    ipcMain.on('db-connect', async(event, message) => {
-        // A linha abaixo estabelece a conexão com o banco
+    // conexão com o banco
+    ipcMain.on('db-connect', async (event, message) => {
+        // a linha abaixo estabelece a conexão com o banco
         dbcon = await dbConnect()
-        // Enviar ao renderizador uma mensagem para trocar o ícone do status do banco da dados
+        // enviar ao renderizador uma mensagem para trocar o ícone do status do banco de dados
         event.reply('db-message', "conectado")
     })
 
-    // Desconectar do banco ao encerrar a aplicação
+    // desconectar do banco ao encerrar a aplicação
     app.on('before-quit', async () => {
         await desconectar(dbcon)
     })
-
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
@@ -225,3 +231,98 @@ const template = [
         ]
     }
 ]
+
+// CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// Recebimento dos dados do formulário
+ipcMain.on('new-client', async (event, cliente) => {
+    //teste de recebimento dos dados (Passo 2 - slide) Importante!
+    console.log(cliente)
+
+    // Passo 3 - slide (cadastrar os dados no banco de dados)
+    try {
+        // criar um novo objeto usando a classe modelo
+        const novoCliente = new clienteModel({
+            nomeCliente: cliente.nomeCli,
+            foneCliente: cliente.foneCli,
+            emailCliente: cliente.emailCli
+        })
+        // a linha abaixo usa a biblioteca moongoose para salvar
+        await novoCliente.save()
+
+        //confirmação de cliente adicionado no banco
+        dialog.showMessageBox({
+            type: 'info',
+            title: "Aviso",
+            message: "Cliente adicionado com sucesso",
+            buttons: ['OK']
+        })
+        // enviar uma resposta para o renderizador resetar o form
+        event.reply('reset-form')
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+ipcMain.on('new-fornecedor', async (event, fornecedor) => {
+    //teste de recebimento dos dados (Passo 2 - slide) Importante!
+    console.log(fornecedor)
+
+    // Passo 3 - slide (cadastrar os dados no banco de dados)
+    try {
+        // criar um novo objeto usando a classe modelo
+        const novoFornecedor = new fornecedorModel({
+            razaoFornecedor: fornecedor.razaoFor,
+            foneFornecedor: fornecedor.foneFor,
+            siteFornecedor: fornecedor.siteFor
+        })
+        // a linha abaixo usa a biblioteca moongoose para salvar
+        await novoFornecedor.save()
+
+        //confirmação de fornecedor adicionado no banco
+        dialog.showMessageBox({
+            type: 'info',
+            title: "Aviso",
+            message: "Fornecedor adicionado com sucesso",
+            buttons: ['OK']
+        })
+        // enviar uma resposta para o renderizador resetar o form
+        event.reply('reset-form')
+
+    } catch (error) {
+        console.log(error)
+    }
+
+
+
+})
+
+ipcMain.on('new-produto', async (event, produto) => {
+    //teste de recebimento dos dados (Passo 2 - slide) Importante!
+    console.log(produto)
+
+    // Passo 3 - slide (cadastrar os dados no banco de dados)
+    try {
+        // criar um novo objeto usando a classe modelo
+        const novoProduto = new produtoModel({
+            nomeProduto: produto.nomePro,
+            codigoProduto: produto.codigoPro,
+            precoProduto: produto.precoPro
+        })
+        // a linha abaixo usa a biblioteca moongoose para salvar
+        await novoProduto.save()
+
+        //confirmação de cliente adicionado no banco
+        dialog.showMessageBox({
+            type: 'info',
+            title: "Aviso",
+            message: "Produto adicionado com sucesso",
+            buttons: ['OK']
+        })
+        // enviar uma resposta para o renderizador resetar o form
+        event.reply('reset-form')
+
+    } catch (error) {
+        console.log(error)
+    }
+})

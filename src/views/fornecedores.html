@@ -9,10 +9,56 @@
     <link rel="stylesheet" href="../public/css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Fornecedores</h1>
-    </div>
-    <script src="../public/js/bootstrap.min.js"></script>
-    <script src="fornecedores.js"></script>
+    <body>
+        <div class="container">
+            <h1>Clientes</h1>
+            <form id="frmFornecedor" class="mt-2 row g-3">
+    
+                <!-- Buscar fornecedor -->
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="searchFornecedor" maxlength="30" spellcheck="false">
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary" id="btnRead">Buscar</button>
+                </div>
+    
+                <hr class="mt-4 border border-primary border -1">
+    
+                <!-- Id do fornecedor (oculto) -->
+                <div class="col-md-6" id="idFornecedor">
+                    <input class="form-control" type="text" id="inputFornecedor" placeholder="id">
+                </div>
+    
+                <!-- Razão Social -->
+                <div class="col-md-8">
+                    <label for="inputRazaoFornecedor" class="form-label">Razão Social</label>
+                    <input class="form-control" type="text" id="inputRazaoFornecedor" spellcheck="false" required maxlength="50">
+                </div>
+    
+                <!-- Fone -->
+                <div class="col-md-4">
+                    <label for="inputPhoneFornecedor" class="form-label">Telefone</label>
+                    <input class="form-control" type="tel" id="inputPhoneFornecedor" spellcheck="false" required maxlength="15">
+                </div>
+    
+                <!-- Site -->
+                <div class="col-md-8">
+                    <label for="inputSiteFornecedor" class="form-label">Site</label>
+                    <input class="form-control" type="url" id="inputSiteFornecedor" spellcheck="false" maxlength="50">
+                </div>
+    
+                <!-- Botões -->
+                <div class="mt-5">
+                    <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
+                    <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
+                    <button type="submit" class="btn btn-danger" id="btnDelete">Excluir</button>
+                    <button type="reset" class="btn" id="btnReset"></button>
+                </div>
+    
+            </form>
+        </div>
+        <script src="../public/js/bootstrap.min.js"></script>
+        <script src="fornecedores.js"></script>
+    </body>
 </body>
 </html>

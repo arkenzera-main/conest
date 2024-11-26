@@ -6,17 +6,17 @@
 const { model, Schema } = require('mongoose')
 
 //criação da estrutura de dados ("tabela") que será usada no banco
-const clienteSchema = new Schema({
-    nomeCliente: {
+const fornecedorSchema = new Schema({
+    razaoFornecedor: {
         type: String
     },
-    foneCliente: {
+    foneFornecedor: {
         type: String
     },
-    emailCliente: {
+    siteFornecedor: {
         type: String
     }
 })
 
 // exportar para o main
-module.exports = model('Clientes', clienteSchema)
+module.exports = model('Fornecedores', fornecedorSchema)

@@ -1,22 +1,22 @@
 /**
- * Modelo de dados (Clientes)
+ * Modelo de dados (Produtos)
  */
 
 //importação de bibliotecas
 const { model, Schema } = require('mongoose')
 
 //criação da estrutura de dados ("tabela") que será usada no banco
-const clienteSchema = new Schema({
-    nomeCliente: {
+const produtoSchema = new Schema({
+    nomeProduto: {
         type: String
     },
-    foneCliente: {
+    codigoProduto: {
         type: String
     },
-    emailCliente: {
+    precoProduto: {
         type: String
     }
 })
 
 // exportar para o main
-module.exports = model('Clientes', clienteSchema)
+module.exports = model('Produtos', produtoSchema)
