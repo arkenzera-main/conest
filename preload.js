@@ -13,5 +13,5 @@ contextBridge.exposeInMainWorld('api', {
     novoCliente: (cliente) => ipcRenderer.send('new-client', cliente),
     novoFornecedor: (fornecedor) => ipcRenderer.send('new-fornecedor', fornecedor),
     novoProduto: (produto) => ipcRenderer.send('new-produto', produto),
-    resetarFormulario: (args) => ipcRenderer.on('reset-form', args)    
+    resetarFormulario: (args) => ipcRenderer.on('reset-form', args)
 })

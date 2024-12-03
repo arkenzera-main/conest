@@ -244,7 +244,14 @@ ipcMain.on('new-client', async (event, cliente) => {
         const novoCliente = new clienteModel({
             nomeCliente: cliente.nomeCli,
             foneCliente: cliente.foneCli,
-            emailCliente: cliente.emailCli
+            emailCliente: cliente.emailCli,
+            CEPCliente: cliente.CEPCli,
+            LogradouroCliente: cliente.LograCli,
+            BairroCliente: cliente.BaiCli,
+            CidadeCliente: cliente.CidCli,
+            UfCliente: cliente.UfCli,
+            ComplementoCliente: cliente.CompCli,
+            DddCliente: cliente.DddCli
         })
         // a linha abaixo usa a biblioteca moongoose para salvar
         await novoCliente.save()

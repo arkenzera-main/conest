@@ -1,64 +1,141 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://viacep.com.br">
     <title>Conest - Fornecedores</title>
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
 </head>
+
 <body>
-    <body>
-        <div class="container">
-            <h1>Clientes</h1>
-            <form id="frmFornecedor" class="mt-2 row g-3">
-    
-                <!-- Buscar fornecedor -->
-                <div class="col-md-6">
-                    <input type="text" class="form-control" id="searchFornecedor" maxlength="30" spellcheck="false">
-                </div>
-                <div class="col-md-4">
-                    <button class="btn btn-primary" id="btnRead">Buscar</button>
-                </div>
-    
-                <hr class="mt-4 border border-primary border -1">
-    
-                <!-- Id do fornecedor (oculto) -->
-                <div class="col-md-6" id="idFornecedor">
-                    <input class="form-control" type="text" id="inputFornecedor" placeholder="id">
-                </div>
-    
-                <!-- Razão Social -->
-                <div class="col-md-8">
-                    <label for="inputRazaoFornecedor" class="form-label">Razão Social</label>
-                    <input class="form-control" type="text" id="inputRazaoFornecedor" spellcheck="false" required maxlength="50">
-                </div>
-    
-                <!-- Fone -->
-                <div class="col-md-4">
-                    <label for="inputPhoneFornecedor" class="form-label">Telefone</label>
-                    <input class="form-control" type="tel" id="inputPhoneFornecedor" spellcheck="false" required maxlength="15">
-                </div>
-    
-                <!-- Site -->
-                <div class="col-md-8">
-                    <label for="inputSiteFornecedor" class="form-label">Site</label>
-                    <input class="form-control" type="url" id="inputSiteFornecedor" spellcheck="false" maxlength="50">
-                </div>
-    
-                <!-- Botões -->
-                <div class="mt-5">
-                    <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
-                    <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
-                    <button type="submit" class="btn btn-danger" id="btnDelete">Excluir</button>
-                    <button type="reset" class="btn" id="btnReset"></button>
-                </div>
-    
-            </form>
-        </div>
-        <script src="../public/js/bootstrap.min.js"></script>
-        <script src="fornecedores.js"></script>
-    </body>
+    <div class="container py-4 bg-light shadow rounded">
+        <h1 class="text-center text-primary mb-4">Gerenciamento de Fornecedores</h1>
+        <form id="frmFornecedor" class="row g-3">
+            <!-- Buscar fornecedor -->
+            <div class="col-md-8">
+                <input type="text" class="form-control" id="searchFornecedor" maxlength="30"
+                    placeholder="Buscar fornecedor" spellcheck="false">
+            </div>
+            <div class="col-md-4 text-md-end">
+                <button class="btn btn-primary w-100" id="btnRead">Buscar</button>
+            </div>
+
+            <hr class="mt-4 border border-primary">
+
+            <!-- Id do fornecedor (oculto) -->
+            <div class="col-md-6 d-none" id="idFornecedor">
+                <input class="form-control" type="text" id="inputFornecedor" placeholder="ID do fornecedor">
+            </div>
+
+            <!-- Razão Social -->
+            <div class="col-md-6">
+                <label for="inputRazaoFornecedor" class="form-label">Razão Social</label>
+                <input type="text" class="form-control" id="inputRazaoFornecedor" spellcheck="false" required
+                    maxlength="50" placeholder="Razão Social">
+            </div>
+
+            <!-- Telefone -->
+            <div class="col-md-6">
+                <label for="inputPhoneFornecedor" class="form-label">Telefone</label>
+                <input type="tel" class="form-control" id="inputPhoneFornecedor" spellcheck="false" required
+                    maxlength="15" placeholder="(DDD) Número">
+            </div>
+
+            <!-- Site -->
+            <div class="col-md-6">
+                <label for="inputSiteFornecedor" class="form-label">Site</label>
+                <input type="url" class="form-control" id="inputSiteFornecedor" spellcheck="false" maxlength="50"
+                    placeholder="www.exemplo.com">
+            </div>
+
+            <!-- Endereço -->
+            <div class="col-md-6">
+                <label for="inputCEPClient" class="form-label">CEP</label>
+                <input type="text" class="form-control" id="inputCEPClient" maxlength="9" onblur="buscarEndereco()"
+                    placeholder="00000-000" required>
+            </div>
+            <div class="col-md-4">
+                <label for="numero" class="form-label">Número</label>
+                <input type="text" class="form-control" id="numero" name="numero" maxlength="5"
+                    placeholder="Número da empresa" required>
+            </div>
+            <div class="col-md-8">
+                <label for="logradouro" class="form-label">Logradouro</label>
+                <input type="text" class="form-control" id="logradouro" placeholder="Rua, avenida, etc.">
+            </div>
+            <div class="col-md-4">
+                <label for="bairro" class="form-label">Bairro</label>
+                <input type="text" class="form-control" id="bairro" placeholder="Bairro">
+            </div>
+            <div class="col-md-6">
+                <label for="cidade" class="form-label">Cidade</label>
+                <input type="text" class="form-control" id="cidade" placeholder="Cidade">
+            </div>
+            <div class="col-md-2">
+                <label for="uf" class="form-label">UF</label>
+                <select class="form-select" name="uf" id="uf">
+                    <option value="">Escolher...</option>
+                    <option value="AC">AC</option>
+                    <option value="AL">AL</option>
+                    <option value="AM">AM</option>
+                    <option value="AP">AP</option>
+                    <option value="BA">BA</option>
+                    <option value="CE">CE</option>
+                    <option value="DF">DF</option>
+                    <option value="ES">ES</option>
+                    <option value="GO">GO</option>
+                    <option value="MA">MA</option>
+                    <option value="MT">MT</option>
+                    <option value="MS">MS</option>
+                    <option value="MG">MG</option>
+                    <option value="PA">PA</option>
+                    <option value="PB">PB</option>
+                    <option value="PR">PR</option>
+                    <option value="PE">PE</option>
+                    <option value="PI">PI</option>
+                    <option value="RJ">RJ</option>
+                    <option value="RN">RN</option>
+                    <option value="RS">RS</option>
+                    <option value="RO">RO</option>
+                    <option value="RR">RR</option>
+                    <option value="SC">SC</option>
+                    <option value="SP">SP</option>
+                    <option value="SE">SE</option>
+                    <option value="TO">TO</option>
+
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="complemento" class="form-label">Complemento</label>
+                <input type="text" class="form-control" id="complemento" placeholder="Complemento (opcional)">
+            </div>
+            <div class="col-md-2">
+                <label for="ddd" class="form-label">DDD</label>
+                <input type="text" class="form-control" id="ddd" maxlength="3" placeholder="DDD">
+            </div>
+
+            <!-- Botões -->
+            <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-success me-2" id="btnCreate"><i class="bi bi-plus-circle"></i>
+                    Adicionar</button>
+                <button type="button" class="btn btn-warning me-2" id="btnUpdate"><i class="bi bi-pencil"></i>
+                    Editar</button>
+                <button type="button" class="btn btn-danger me-2" id="btnDelete"><i class="bi bi-trash"></i>
+                    Excluir</button>
+                <button type="reset" class="btn btn-secondary"><i class="bi bi-arrow-counterclockwise"></i>
+                    Resetar</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="../public/js/bootstrap.min.js"></script>
+    <script src="fornecedores.js"></script>
+    <script src="../public/js/cep.js"></script>
+
 </body>
+
 </html>

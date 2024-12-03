@@ -15,7 +15,29 @@ const clienteSchema = new Schema({
     },
     emailCliente: {
         type: String
+    },
+    CEPCliente: {
+        type: String
+    },
+    LogradouroCliente: {
+        type: String
+    },
+    BairroCliente: {
+        type: String
+    },
+    CidadeCliente: {
+        type: String
+    },
+    UfCliente: {
+        type: String
+    },
+    ComplementoCliente: {
+        type: String
+    },
+    DddCliente: {
+        type:Number
     }
+
 })
 
 // exportar para o main
