@@ -3,6 +3,14 @@
  * fornecedores.html
  */
 
+// Array usado nos métodos para manipulação da estrutura de dados
+
+let arrayProduto = []
+
+
+
+
+
 // CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 //Passo 1 - slide (capturar os dados dos inputs do form)
@@ -39,3 +47,46 @@ api.resetarFormulario((args) => {
 })
 
 // Fim - reset form <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+// CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+function buscarProduto() {
+    //console.log("Função buscar cliente funcionando!")
+
+    // Passo 1 (seguindo os slides)
+    let proNome = document.getElementById('searchProduct').value
+    console.log(proNome) // Teste do passo 1
+
+    // Passo 2 (seguindo os slides) - Enviar o pedido de busca do cliente ao main.js
+    api.buscarProduto(proNome)
+    
+    // Passo 5 - Recebimento dos dados do cliente
+    api.renderizarProduto((event, dadosProduto) => {
+        // teste de recebimento dos dados do cliente
+        console.log(dadosProduto)
+        // Passo 6 (seguindo os slides) - Renderização dos dados do cliente no formulário 
+        const produtoRenderizado = JSON.parse(dadosProduto)
+        arrayProduto = produtoRenderizado
+        // Teste para entendimento da lógica 
+        console.log(arrayProduto)
+        // Percorrer o array de clientes, extrair os dados e setar/preencher os campos do formulário 
+        arrayProduto.forEach((c) => {
+            document.getElementById('inputNomeProduto').value = c.nomeProduto
+            document.getElementById('inputCodigoProduto').value = c.codigoProduto
+            document.getElementById('inputPrecoProduto').value = c.precoProduto
+            document.getElementById('inputProduto').value = c._id
+        })
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+// Fim CRUD Read <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

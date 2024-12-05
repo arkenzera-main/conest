@@ -17,17 +17,17 @@
         <form id="frmFornecedor" class="row g-3">
             <!-- Buscar fornecedor -->
             <div class="col-md-8">
-                <input type="text" class="form-control" id="searchFornecedor" maxlength="30"
+                <input type="text" class="form-control" id="searchSupplier" maxlength="30"
                     placeholder="Buscar fornecedor" spellcheck="false">
             </div>
             <div class="col-md-4 text-md-end">
-                <button class="btn btn-primary w-100" id="btnRead">Buscar</button>
+                <button class="btn btn-primary w-100" id="btnRead" onclick="buscarFornecedor()">Buscar</button>
             </div>
 
             <hr class="mt-4 border border-primary">
 
             <!-- Id do fornecedor (oculto) -->
-            <div class="col-md-6 d-none" id="idFornecedor">
+            <div class="col-md-6" id="idFornecedor">
                 <input class="form-control" type="text" id="inputFornecedor" placeholder="ID do fornecedor">
             </div>
 

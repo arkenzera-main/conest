@@ -3,6 +3,15 @@
  * clientes.html
  */
 
+
+
+// Array usado nos métodos para manipulação da estrutura de dados
+
+let arrayCliente = []
+
+
+
+
 // CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 //Passo 1 - slide (capturar os dados dos inputs do form)
@@ -45,6 +54,50 @@ formCliente.addEventListener('submit', async (event) => {
 })
 // Fim CRUD Create <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+// CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+function buscarCliente() {
+    //console.log("Função buscar cliente funcionando!")
+
+    // Passo 1 (seguindo os slides)
+    let cliNome = document.getElementById('searchClient').value
+    console.log(cliNome) // Teste do passo 1
+
+    // Passo 2 (seguindo os slides) - Enviar o pedido de busca do cliente ao main.js
+    api.buscarCliente(cliNome)
+    
+    // Passo 5 (seguindo os slides) - Recebimento dos dados do cliente
+    api.renderizarCliente((event, dadosCliente) => {
+        // teste de recebimento dos dados do cliente
+        console.log(dadosCliente)
+        // Passo 6 (seguindo os slides) - Renderização dos dados do cliente no formulário 
+        const clienteRenderizado = JSON.parse(dadosCliente)
+        arrayCliente = clienteRenderizado
+        // Teste para entendimento da lógica 
+        console.log(arrayCliente)
+        // Percorrer o array de clientes, extrair os dados e setar/preencher os campos do formulário 
+        arrayCliente.forEach((c) => {
+            document.getElementById('inputNameClient').value = c.nomeCliente
+            document.getElementById('inputPhoneClient').value = c.foneCliente
+            document.getElementById('inputEmailClient').value = c.emailCliente
+            document.getElementById('inputClient').value = c._id
+        })
+    })
+
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+// Fim CRUD Read <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
 // --------------------------------------------------------------------------

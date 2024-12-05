@@ -13,6 +13,7 @@ const clienteModel = require('./src/models/Clientes.js')
 const fornecedorModel = require('./src/models/Fornecedores.js')
 
 const produtoModel = require('./src/models/Produtos.js')
+const { error } = require('node:console')
 
 
 
@@ -271,6 +272,82 @@ ipcMain.on('new-client', async (event, cliente) => {
     }
 })
 
+
+// Fim CRUD Create <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+// CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+ipcMain.on('searchClient', async (event, cliNome) => {
+    // teste de recebimento do nome do cliente a ser pesquisado ( passo 2)
+    console.log(cliNome)
+
+    // Passo 3 e 4 - Pesquisar no banco de dados o cliente pelo nome
+    // RegExp - Filtro pelo nome do cliente 'i' insensitive ( maiúsculo ou minúsculo )
+    // Atenção: nomeCliente - model | cliNome - renderizador
+    try {
+        const dadosCliente = await clienteModel.find({ 
+            nomeCliente: new RegExp(cliNome, 'i')
+        })
+        console.log(dadosCliente) // Teste do passo 3 e 4
+        // Passo 5 - seguindo os slides - Enviar os dados do cliente para o renderizador 
+        event.reply('client-data', JSON.stringify(dadosCliente)) // JSON.stringify converte para JSON 
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
+ipcMain.on('searchProduct', async (event, proNome) => {
+    // teste de recebimento do nome do cliente a ser pesquisado ( passo 2)
+    console.log(proNome)
+
+    // Passo 3 - Pesquisar no banco de dados o cliente pelo nome
+    // RegExp - Filtro pelo nome do cliente 'i' insensitive ( maiúsculo ou minúsculo )
+    try {
+        const dadosProduto = await produtoModel.find({ 
+            nomeProduto: new RegExp(proNome, 'i')
+        })
+        console.log(dadosProduto) // Teste do passo 3
+        // Passo 5 - seguindo os slides - Enviar os dados do cliente para o renderizador 
+        event.reply('product-data', JSON.stringify(dadosProduto)) // JSON.stringify converte para JSON 
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
+ipcMain.on('searchSupplier', async (event, supNome) => {
+    // teste de recebimento do nome do cliente a ser pesquisado ( passo 2)
+    console.log(supNome)
+
+    // Passo 3 - Pesquisar no banco de dados o cliente pelo nome
+    // RegExp - Filtro pelo nome do cliente 'i' insensitive ( maiúsculo ou minúsculo )
+    try {
+        const dadosFornecedor = await fornecedorModel.find({ 
+            razaoFornecedor: new RegExp(supNome, 'i')
+        })
+        console.log(dadosFornecedor) // Teste do passo 3
+        // Passo 5 - seguindo os slides - Enviar os dados do cliente para o renderizador 
+        event.reply('supplier-data', JSON.stringify(dadosFornecedor)) // JSON.stringify converte para JSON 
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
+
+
+
+
+
+
+
+
+// Fim CRUD Read <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
 ipcMain.on('new-fornecedor', async (event, fornecedor) => {
     //teste de recebimento dos dados (Passo 2 - slide) Importante!
     console.log(fornecedor)
@@ -333,3 +410,7 @@ ipcMain.on('new-produto', async (event, produto) => {
         console.log(error)
     }
 })
+
+
+
+// CRUD Read
