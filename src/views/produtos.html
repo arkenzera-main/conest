@@ -5,62 +5,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
-    <title>Conest - Produtos</title>
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
+    <title>Conest - Produtos</title>
 </head>
 
 <body>
     <div class="container">
         <h1>Produtos</h1>
-        <form id="frmProduto" class="mt-2 row g-3">
-
+        <form id="frmProduct" class="mt-2 row g-3">
             <!-- Buscar produto -->
             <div class="col-md-6">
                 <input type="text" class="form-control" id="searchProduct" maxlength="30" spellcheck="false">
             </div>
             <div class="col-md-4">
                 <button class="btn btn-primary" id="btnRead" onclick="buscarProduto()">Buscar</button>
+                <button class="btn btn-primary" id="btnReadCod" onclick="buscarProdutoCod()">Buscar Código</button>
+            </div>
+            <hr class="mt-4 border-primary border -1">
+
+            <!-- ID do produto (oculto) -->
+            <div class="col-md-6" id="idProduct">
+                <input type="text" id="inputProduct" class="form-control" placeholder="id">
             </div>
 
-            <hr class="mt-4 border border-primary border -1">
-
-            <!-- Id do produto (oculto) -->
-            <div class="col-md-6" id="idProduto">
-                <input class="form-control" type="text" id="inputProduto" placeholder="id">
-            </div>
-
-            <!-- Nome -->
+            <!-- Nome do produto -->
             <div class="col-md-8">
-                <label for="inputNomeProduto" class="form-label">Nome do produto</label>
-                <input class="form-control" type="text" id="inputNomeProduto" spellcheck="false" required
-                    maxlength="50">
+                <label for="inputNameProduct" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="inputNameProduct" spellcheck="false" required maxlength="50">
             </div>
 
             <!-- Código de barras -->
             <div class="col-md-4">
-                <label for="inputCodigoProduto" class="form-label">Código de Barras</label>
-                <input class="form-control" type="number" id="inputCodigoProduto" spellcheck="false" required
-                    maxlength="15">
+                <label for="inputBarProduct" class="form-label">Código de barras</label>
+                <input type="text" class="form-control" id="inputBarProduct" spellcheck="false" required maxlength="15">
             </div>
 
             <!-- Preço -->
             <div class="col-md-8">
-                <label for="inputPrecoProduto" class="form-label">Preço</label>
-                <input class="form-control" type="number" id="inputPrecoProduto" spellcheck="false" maxlength="50">
+                <label for="inputPrecoProduct" class="form-label">Preço</label>
+                <input type="text" class="form-control" id="inputPrecoProduct" spellcheck="false" maxlength="8">
             </div>
 
             <!-- Botões -->
             <div class="mt-5">
                 <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
-                <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
+                <button type="submit" class="btn btn-warning" id="btnUptade">Editar</button>
                 <button type="submit" class="btn btn-danger" id="btnDelete">Excluir</button>
-                <button type="reset" class="btn" id="btnReset"></button>
+                <button type="reset" class="btn" id="btnReset" oncanplay=""></button>
             </div>
 
         </form>
     </div>
+
     <script src="../public/js/bootstrap.min.js"></script>
     <script src="produtos.js"></script>
 </body>
+
 </html>

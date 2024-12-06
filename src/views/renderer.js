@@ -1,4 +1,3 @@
-// botões
 function fechar() {
     api.fecharJanela()
 }
@@ -19,7 +18,7 @@ function relatorios() {
     api.janelaRelatorios()
 }
 
-// inserção da data no rodapé
+//Inserção da data de rodapé
 function obterData() {
     const data = new Date()
     const options = {
@@ -30,7 +29,6 @@ function obterData() {
     }
     return data.toLocaleDateString('pt-BR', options)
 }
-
 document.getElementById('dataAtual').innerHTML = obterData()
 
 // Ícone de status do banco de dados

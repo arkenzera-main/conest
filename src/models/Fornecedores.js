@@ -1,13 +1,12 @@
-/**
- * Modelo de dados (Clientes)
- */
+/*
+*   Modelo de dados (fornecedores)
+*/
 
-//importação de bibliotecas
 const { model, Schema } = require('mongoose')
 
-//criação da estrutura de dados ("tabela") que será usada no banco
+//Criação da estrutura de dados
 const fornecedorSchema = new Schema({
-    razaoFornecedor: {
+    nomeFornecedor: {
         type: String
     },
     foneFornecedor: {
@@ -15,8 +14,29 @@ const fornecedorSchema = new Schema({
     },
     siteFornecedor: {
         type: String
+    },
+    cepFornecedor: {
+        type: String
+    },
+    dddFornecedor: {
+        type: String
+    },
+    logradouroFornecedor: {
+        type: String
+    },
+    numeroFornecedor: {
+        type: String
+    },
+    bairroFornecedor: {
+        type: String
+    },
+    cidadeFornecedor: {
+        type: String
+    },
+    ufFornecedor: {
+        type: String
     }
 })
 
-// exportar para o main
-module.exports = model('Fornecedores', fornecedorSchema)
+//Para modificar o nome da coleção ("tabela"), basta modificar na linha abaixo o rótulo 'Fornecedores", sempre iniciando com letra maiúscula.
+module.exports = model('Fornecedores', fornecedorSchema) //Exportar para o main
