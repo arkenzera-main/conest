@@ -225,7 +225,6 @@ const template = [
         ]
     }
 ]
-/************************* Clientes *********************************/
 //CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //Recebimento dos dados do formulário do cli
 ipcMain.on('new-client', async(event, cliente) => {
@@ -261,26 +260,6 @@ ipcMain.on('new-client', async(event, cliente) => {
         //Enviar uma resposta para o renderizador resetar o form
         event.reply('reset-form')
 
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-//------------------------CRUD READ-------------------------->
-ipcMain.on('search-client', async (event, cliNome) => {
-    //Teste de recebimento do nome do cliente a ser pesquisado
-    console.log(cliNome)
-    //Passo 3 e 4 - Pesquisar no banco de dados
-    //Find() - Buscar no banco de dados (mongoose)
-    //RegExp - Filtro pelo nome do cliente 'i' insensitive(maiscúlo ou minúsculo)
-    try {
-        const dadosCliente = await clienteModel.find({
-            //nomeCliente vem do model | cliNome vem do renderizador
-            nomeCliente: new RegExp(cliNome, 'i')
-        })
-        console.log(dadosCliente) //Teste passo 3 e 4
-        //PASSO 5 (slide) Enviar os dados do cliente para o renderizador | para converter JSON.stringify
-        event.reply('client-data', JSON.stringify(dadosCliente))
     } catch (error) {
         console.log(error)
     }
@@ -325,25 +304,6 @@ ipcMain.on('new-supplier', async(event, fornecedor) => {
     }
 })
 
-//------------------------CRUD READ-------------------------->
-ipcMain.on('search-supplier', async (event, fornNome) => {
-    //Teste de recebimento do nome do fornecedor a ser pesquisado
-    console.log(fornNome)
-    //Passo 3 e 4 - Pesquisar no banco de dados
-    //Find() - Buscar no banco de dados (mongoose)
-    //RegExp - Filtro pelo nome do fornecedor 'i' insensitive(maiscúlo ou minúsculo)
-    try {
-        const dadosFornecedor = await fornecedorModel.find({
-            //nomeCliente vem do model | cliNome vem do renderizador
-            nomeFornecedor: new RegExp(fornNome, 'i')
-        })
-        console.log(dadosFornecedor) //Teste passo 3 e 4
-        //PASSO 5 (slide) Enviar os dados do fornecedor para o renderizador | para converter JSON.stringify
-        event.reply('supplier-data', JSON.stringify(dadosFornecedor))
-    } catch (error) {
-        console.log(error)
-    }
-})
 /************************* PRODUTO ********************/
 ipcMain.on('new-product', async(event, produto) => {
     //Teste de recebimento dos dados
@@ -375,7 +335,49 @@ ipcMain.on('new-product', async(event, produto) => {
         console.log(error)
     }
 })
-//------------------------CRUD READ NOME-------------------------->
+// Fim do CRUD Create <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+// CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ipcMain.on('search-client', async (event, cliNome) => {
+    //Teste de recebimento do nome do cliente a ser pesquisado
+    console.log(cliNome)
+    //Passo 3 e 4 - Pesquisar no banco de dados
+    //Find() - Buscar no banco de dados (mongoose)
+    //RegExp - Filtro pelo nome do cliente 'i' insensitive(maiscúlo ou minúsculo)
+    try {
+        const dadosCliente = await clienteModel.find({
+            //nomeCliente vem do model | cliNome vem do renderizador
+            nomeCliente: new RegExp(cliNome, 'i')
+        })
+        console.log(dadosCliente) //Teste passo 3 e 4
+        //PASSO 5 (slide) Enviar os dados do cliente para o renderizador | para converter JSON.stringify
+        event.reply('client-data', JSON.stringify(dadosCliente))
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+/************************** Fornecedores ********************************/
+ipcMain.on('search-supplier', async (event, fornNome) => {
+    //Teste de recebimento do nome do fornecedor a ser pesquisado
+    console.log(fornNome)
+    //Passo 3 e 4 - Pesquisar no banco de dados
+    //Find() - Buscar no banco de dados (mongoose)
+    //RegExp - Filtro pelo nome do fornecedor 'i' insensitive(maiscúlo ou minúsculo)
+    try {
+        const dadosFornecedor = await fornecedorModel.find({
+            //nomeCliente vem do model | cliNome vem do renderizador
+            nomeFornecedor: new RegExp(fornNome, 'i')
+        })
+        console.log(dadosFornecedor) //Teste passo 3 e 4
+        //PASSO 5 (slide) Enviar os dados do fornecedor para o renderizador | para converter JSON.stringify
+        event.reply('supplier-data', JSON.stringify(dadosFornecedor))
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+/************************* PRODUTO ********************/
 ipcMain.on('search-product', async (event, nomePro) => {
     //Teste de recebimento do nome do fornecedor a ser pesquisado
     console.log(nomePro)
@@ -394,7 +396,8 @@ ipcMain.on('search-product', async (event, nomePro) => {
         console.log(error)
     }
 })
-//---------------------------------CRUD READ COD----------------------------------------
+
+/************************* PRODUTO CÓDIGO ********************/
 ipcMain.on('search-product', async (event, codPro) => {
     //Teste de recebimento do nome do fornecedor a ser pesquisado
     console.log(codPro)
@@ -413,4 +416,106 @@ ipcMain.on('search-product', async (event, codPro) => {
         console.log(error)
     }
 })
-//--------------------------------------------------------------------------<
+
+// CRUD Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ipcMain.on('update-client', async (event, cliente) => {
+    //teste de recebimento dos dados do cliente (passo 2)
+    console.log(cliente)
+    try {
+        const clienteEditado = await clienteModel.findByIdAndUpdate(
+            cliente.idCli, {
+            nomeCliente: cliente.nomeCli,
+            foneCliente: cliente.foneCli,
+            emailCliente: cliente.emailCli
+        },
+            {
+                new: true
+            }
+        )
+    } catch (error) {
+        console.log(error)
+    }
+    dialog.showMessageBox(client, {
+        type: 'info',
+        message: 'Dados do cliente alterados com sucesso.',
+        buttons: ['OK']
+    }).then((result) => {
+        if (result.response === 0) {
+            event.reply('reset-form')
+        }
+    })   
+})
+
+/************************** Fornecedores ********************************/
+ipcMain.on('update-supplier', async (event, fornecedor) => {
+    //teste de recebimento dos dados do cliente (passo 2)
+    console.log(fornecedor)
+    try {
+        const fornecedorEditado = await fornecedorModel.findByIdAndUpdate(
+            cliente.idCli, {
+            nomeFornecedor: fornecedor.nomeForn,
+            foneFornecedor: fornececdor.foneForn,
+            siteFornecedor: fornecedor.siteForn,
+            cepFornecedor: fornecedor.cepForn,
+            dddFornecedor: fornecedor.dddForn,
+            logradouroFornecedor: fornecedor.logradouroForn,
+            numeroFornecedor: fornecedor.numeroForn,
+            bairroFornecedor: fornecedor.bairroForn,
+            cidadeFornecedor: fornecedor.cidadeForn,
+            ufFornecedor: fornecedor.ufForn
+        },
+            {
+                new: true
+            }
+        )
+    } catch (error) {
+        console.log(error)
+    }
+    dialog.showMessageBox(supplier, {
+        type: 'info',
+        message: 'Dados do fornecedor alterados com sucesso.',
+        buttons: ['OK']
+    }).then((result) => {
+        if (result.response === 0) {
+            event.reply('reset-form')
+        }
+    })   
+})
+
+/************************* PRODUTO ********************/
+ipcMain.on('update-product', async (event, produto) => {
+    //teste de recebimento dos dados do cliente (passo 2)
+    console.log(produto)
+    try {
+        const produtoEditado = await produtoModel.findByIdAndUpdate(
+            cliente.idCli, {
+            nomeFornecedor: fornecedor.nomeForn,
+            foneFornecedor: fornececdor.foneForn,
+            siteFornecedor: fornecedor.siteForn,
+            cepFornecedor: fornecedor.cepForn,
+            dddFornecedor: fornecedor.dddForn,
+            logradouroFornecedor: fornecedor.logradouroForn,
+            numeroFornecedor: fornecedor.numeroForn,
+            bairroFornecedor: fornecedor.bairroForn,
+            cidadeFornecedor: fornecedor.cidadeForn,
+            ufFornecedor: fornecedor.ufForn
+        },
+            {
+                new: true
+            }
+        )
+    } catch (error) {
+        console.log(error)
+    }
+    dialog.showMessageBox(supplier, {
+        type: 'info',
+        message: 'Dados do fornecedor alterados com sucesso.',
+        buttons: ['OK']
+    }).then((result) => {
+        if (result.response === 0) {
+            event.reply('reset-form')
+        }
+    })   
+})
+
+// Fim do CRUD Update <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
