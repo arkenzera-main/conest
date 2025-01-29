@@ -17,28 +17,39 @@ let cidadeCliente = document.getElementById('inputCidadeClient')
 let ufCliente = document.getElementById('inputUfClient')  
 
 
-//Evento associado ao botão adicionar (quando o botão for pressionado)
+// CRUD Create/Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// Evento associado aos botões adicionar e editar
 formCliente.addEventListener('submit', async (event) => {
-    event.preventDefault()  //Evitar o comportamento padrão de envio em um form
-    //Teste importante(fluxo de dados) console.log(nomeCliente.value, foneCliente.value, emailCliente.value)
+    // evitar o comportamento padrão de envio em um form
+    event.preventDefault()
+    //teste importante! (fluxo dos dados)
+    console.log(idCliente.value, nomeCliente.value, foneCliente.value, emailCliente.value)
 
-    //Passo 2 - Slide (envio das informações para o main)
-    //Criar um objeto 
-    const cliente = {
-        nomeCli: nomeCliente.value,
-        foneCli: foneCliente.value,
-        emailCli: emailCliente.value,
-        cepCli: cepCliente.value,
-        dddCli: dddCliente.value,
-        logradouroCli: logradouroCliente.value,
-        numeroCli: numeroCliente.value,
-        bairroCli: bairroCliente.value,
-        cidadeCli: cidadeCliente.value,
-        ufCli: ufCliente.value
+    //Passo 2 - slide (envio das informações para o main)
+    
+    //Estratégia para determinar se é um novo cadastro de clientes ou a edição de um cliente já existente
+    if (idCliente.value === "") {
+        // criar um objeto
+        const cliente = {
+            nomeCli: nomeCliente.value,
+            foneCli: foneCliente.value,
+            emailCli: emailCliente.value
+        }
+        api.novoCliente(cliente)
+    } else {
+        // criar um novo objeto com o id do cliente
+        const cliente = {
+            idCli: idCliente.value,
+            nomeCli: nomeCliente.value,
+            foneCli: foneCliente.value,
+            emailCli: emailCliente.value
+        }
+        api.editarCliente(cliente)
     }
-    api.novoCliente(cliente)
+
+
 })
-//Fim CRUD Creat <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+// Fim CRUD Create <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 //CRUD READ ------------------------------------------->
 function buscarCliente(){
@@ -74,18 +85,30 @@ function buscarCliente(){
 }
 
 //<-----------------------------------------------------
+
+
+// CRUD Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function excluirCliente() {
+    api.deletarCliente(idCliente.value) //Passo 1 do slide
+}
+// Fim CRUD Delete
+
+
+
+
+
 //Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>
 api.resetarFormulario((args) => {
-    document.getElementById('inputNameClient').value = ""
-    document.getElementById('inputPhoneClient').value = ""
-    document.getElementById('inputEmailClient').value = ""
-    document.getElementById('inputDddClient').value = ''
-    document.getElementById('inputCepClient').value = ''
-    document.getElementById('inputLogradouroClient').value = ''
-    document.getElementById('inputBairroClient').value = ''
-    document.getElementById('inputCidadeClient').value = ''
-    document.getElementById('inputNumeroClient').value = ''
-    document.getElementById('inputUfClient').value = ''
-    document.getElementById('inputComplementoClient').value = ''
+    document.getElementById('inputNameClient').value = "" //Nome
+    document.getElementById('inputPhoneClient').value = "" //Fone
+    document.getElementById('inputEmailClient').value = "" //Email
+    document.getElementById('inputDddClient').value = "" //DDD
+    document.getElementById('inputCepClient').value = "" //CEP
+    document.getElementById('inputLogradouroClient').value = "" //Rua
+    document.getElementById('inputBairroClient').value = "" // Bairro
+    document.getElementById('inputCidadeClient').value = "" // Cidade
+    document.getElementById('inputNumeroClient').value = "" // Numero
+    document.getElementById('inputUfClient').value = "" // Cidade Sigla
+    document.getElementById('inputComplementoClient').value = "" // Complemento
 })
 //Fim - RESET FORM <<<<<<<<<<<<<<<<<<<<
