@@ -1,10 +1,41 @@
 /* Processo de renderização - clientes.html */
 
+const foco = document.getElementById('searchClient')
+
+//Mudar as propriedades do documento html ao iniciar a janela
+document.addEventListener('DOMContentLoaded', () => {
+    btnCreate.disabled = true
+    btnUpdate.disabled = true
+    btnDelete.disabled = true
+    foco.focus()
+    // Desativar o input das caixas de texto dentro da div .bloqueio
+    document.querySelectorAll('.bloqueio input').forEach(input => {
+        input.disabled = true
+    })
+})
+
+// Função para manipular o evento da tecla Enter
+function teclaEnter(event) {
+    if (event.key === "Enter") {
+        event.preventDefault()
+        buscarCliente()
+    }
+}
+
+// Função para remover o manipulador do evento da tecla Enter
+function restaurarEnter() {
+    document.getElementById('frmClient').removeEventListener('keydown', teclaEnter)
+}
+
+// manipulando o evento (tecla Enter)
+document.getElementById('frmClient').addEventListener('keydown', teclaEnter)
+
 //Array usado nos métodos para manipulação da estrutura de dados
 let arrayCliente = []
 //CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //Passo 1 - Slide (capturar os dados dos inputs do form)
 let formCliente = document.getElementById('frmClient')
+let idCliente = document.getElementById('inputIdClient')
 let nomeCliente = document.getElementById('inputNameClient')
 let foneCliente = document.getElementById('inputPhoneClient')
 let emailCliente = document.getElementById('inputEmailClient')
@@ -33,7 +64,14 @@ formCliente.addEventListener('submit', async (event) => {
         const cliente = {
             nomeCli: nomeCliente.value,
             foneCli: foneCliente.value,
-            emailCli: emailCliente.value
+            emailCli: emailCliente.value,
+            cepCli: cepCliente.value,
+            dddCli: dddCliente.value,
+            logradouroCli: logradouroCliente.value,
+            numeroCli: numeroCliente.value,
+            bairroCli: bairroCliente.value,
+            cidadeCli: cidadeCliente.value,
+            ufCli: ufCliente.value
         }
         api.novoCliente(cliente)
     } else {
@@ -42,7 +80,16 @@ formCliente.addEventListener('submit', async (event) => {
             idCli: idCliente.value,
             nomeCli: nomeCliente.value,
             foneCli: foneCliente.value,
-            emailCli: emailCliente.value
+            emailCli: emailCliente.value,
+            cepCli: cepCliente.value,
+            dddCli: dddCliente.value,
+            logradouroCli: logradouroCliente.value,
+            numeroCli: numeroCliente.value,
+            bairroCli: bairroCliente.value,
+            cidadeCli: cidadeCliente.value,
+            ufCli: ufCliente.value
+
+
         }
         api.editarCliente(cliente)
     }
@@ -52,34 +99,69 @@ formCliente.addEventListener('submit', async (event) => {
 // Fim CRUD Create <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 //CRUD READ ------------------------------------------->
-function buscarCliente(){
-    //PASSO 1 (slides)
+function buscarCliente() {
+    //Passo 1 (slide)
     let cliNome = document.getElementById('searchClient').value
-    console.log(cliNome) //teste 1
-    //PASSO 2
-    api.buscarCliente(cliNome)
-    //Passo 5 - Recebimento dos dados
-    api.renderizarCliente((event, dadosCliente) => {
-        //Teste de recebimento dos dados do cliente
-        console.log(dadosCliente)
-        
-        //Passo 6 - renderização dos dados do cliente no formulário
-        const clienteRenderizado = JSON.parse(dadosCliente)
-        arrayCliente = clienteRenderizado
-        console.log(arrayCliente) //teste para entendimento da lógica
-        //Percorrer o array de clientes, extrair os dados e setar (preencher) os campos do formulário
-        arrayCliente.forEach((c) => {
-            document.getElementById('inputNameClient').value = c.nomeCliente
-            document.getElementById('inputPhoneClient').value = c.foneCliente
-            document.getElementById('inputEmailClient').value = c.emailCliente
-            document.getElementById('inputClient').value = c._id
-            document.getElementById('inputDddClient').value = c.dddCliente
-            document.getElementById('inputLogradouroClient').value = c.logradouroCliente
-            document.getElementById('inputNumeroClient').value = c.numeroCliente
-            document.getElementById('inputBairroClient').value = c.bairroCliente
-            document.getElementById('inputCidadeClient').value = c.cidadeCliente
-            document.getElementById('inputUfClient').value = c.ufCliente
-            document.getElementById('inputCepClient').value = c.cepCliente
+    //validação
+    if (cliNome === "") {
+        api.validarBusca() //validação do campo obrigatório 
+        foco.focus()
+    } else {
+        //console.log(cliNome) // teste do passo 1
+        //Passo 2 (slide) - Enviar o pedido de busca do cliente ao main
+        api.buscarCliente(cliNome)
+        //Passo 5 - Recebimento dos dados do cliente
+        api.renderizarCliente((event, dadosCliente) => {
+            //teste de recebimento dos dados do cliente
+            console.log(dadosCliente)
+            // Passo 6 (slide): renderização dos dados do cliente no formulário
+            const clienteRenderizado = JSON.parse(dadosCliente)
+            arrayCliente = clienteRenderizado
+            // teste para entendimento da lógica
+            console.log(arrayCliente)
+            // percorrer o array de clientes, extrair os dados e setar(peencher) os campos do formulário
+            arrayCliente.forEach((c) => {
+                document.getElementById('inputNameClient').value = c.nomeCliente
+                document.getElementById('inputPhoneClient').value = c.foneCliente
+                document.getElementById('inputEmailClient').value = c.emailCliente
+                document.getElementById('inputIdClient').value = c._id
+                document.getElementById('inputDddClient').value = c.dddCliente
+                document.getElementById('inputLogradouroClient').value = c.logradouroCliente
+                document.getElementById('inputNumeroClient').value = c.numeroCliente
+                document.getElementById('inputBairroClient').value = c.bairroCliente
+                document.getElementById('inputCidadeClient').value = c.cidadeCliente
+                document.getElementById('inputUfClient').value = c.ufCliente
+                document.getElementById('inputCepClient').value = c.cepCliente
+                //limpar o campo de busca e remover o foco
+                foco.value = ""
+                foco.blur()
+                //liberar os botões editar e excluir
+                document.getElementById('btnUpdate').disabled = false
+                document.getElementById('btnDelete').disabled = false
+                //restaurar o padrão da tecla Enter
+                restaurarEnter()
+                // Reativar os inputs das caixas de texto
+                document.querySelectorAll('.bloqueio input').forEach(input => {
+                    input.disabled = false
+                })
+            })
+        })
+    }
+    //setar o nome do cliente e liberar o botão adicionar
+    api.setarNomeCliente(() => {
+        //setar o nome do cliente       
+        let campoNome = document.getElementById('searchClient').value
+        document.getElementById('inputNameClient').focus()
+        document.getElementById('inputNameClient').value = campoNome
+        //limpar o campo de busca e remover o foco
+        foco.value = ""
+        foco.blur()
+        //liberar o botão adicionar
+        btnCreate.disabled = false
+        //restaurar o padrão da tecla Enter
+        restaurarEnter()
+        document.querySelectorAll('.bloqueio input').forEach(input => {
+            input.disabled = false
         })
     })
 }
@@ -97,18 +179,14 @@ function excluirCliente() {
 
 
 
-//Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>
+// Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 api.resetarFormulario((args) => {
-    document.getElementById('inputNameClient').value = "" //Nome
-    document.getElementById('inputPhoneClient').value = "" //Fone
-    document.getElementById('inputEmailClient').value = "" //Email
-    document.getElementById('inputDddClient').value = "" //DDD
-    document.getElementById('inputCepClient').value = "" //CEP
-    document.getElementById('inputLogradouroClient').value = "" //Rua
-    document.getElementById('inputBairroClient').value = "" // Bairro
-    document.getElementById('inputCidadeClient').value = "" // Cidade
-    document.getElementById('inputNumeroClient').value = "" // Numero
-    document.getElementById('inputUfClient').value = "" // Cidade Sigla
-    document.getElementById('inputComplementoClient').value = "" // Complemento
+    resetForm()
 })
-//Fim - RESET FORM <<<<<<<<<<<<<<<<<<<<
+
+function resetForm() {
+    // recarregar a página
+    location.reload()
+}
+
+// Fim - reset form <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

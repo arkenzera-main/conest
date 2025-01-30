@@ -20,13 +20,13 @@
                 <input type="text" class="form-control" id="searchSupplier" maxlength="30" spellcheck="false">
             </div>
             <div class="col-md-4">
-                <button class="btn btn-primary" id="btnRead" onclick="buscarFornecedor()">Buscar</button>
+                <button class="btn btn-primary" id="btnRead" type="button" onclick="buscarFornecedor()">Buscar</button>
             </div>
             <hr class="mt-4 border-primary border -1">
 
             <!-- ID do fornecedor (oculto) -->
             <div class="col-md-6" id="idsupplier">
-                <input type="text" id="inputSupplier" class="form-control" placeholder="id">
+                <input type="text" id="inputIdSupplier" class="form-control" placeholder="id">
             </div>
 
             <!-- Razão social do fornecedor -->
@@ -120,17 +120,17 @@
             <!-- Botões -->
             <div class="mt-5">
                 <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
-                <button type="submit" class="btn btn-warning" id="btnUptade">Editar</button>
-                <button type="submit" class="btn btn-danger" id="btnDelete">Excluir</button>
-                <button type="reset" class="btn" id="btnReset" oncanplay=""></button>
+                <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
+                <button type="button" class="btn btn-danger" id="btnDelete" onclick="excluirFornecedor()">Excluir</button>
+                <button type="reset" class="btn" id="btnReset" onclick="resetForm()"></button>
             </div>
 
         </form>
     </div>
 
     <script src="../public/js/bootstrap.min.js"></script>
-    <script src="fornecedores.js"></script>
     <script src="../public/js/cep.js"></script>
+    <script src="fornecedores.js"></script>
 </body>
 
 </html>

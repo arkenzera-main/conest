@@ -1,10 +1,42 @@
 /* Processo de renderização - fornecedores.html */
 
+
+
+
+
+
+const foco = document.getElementById('searchSupplier')
+
+//Mudar as propriedades do documento html ao iniciar a janela
+document.addEventListener('DOMContentLoaded', () => {
+    btnCreate.disabled = true
+    btnUpdate.disabled = true
+    btnDelete.disabled = true
+    foco.focus()
+})
+
+// Função para manipular o evento da tecla Enter
+function teclaEnter(event) {
+    if (event.key === "Enter") {
+        event.preventDefault()
+        buscarFornecedor()
+    }
+}
+
+// Função para remover o manipulador do evento da tecla Enter
+function restaurarEnter() {
+    document.getElementById('frmSupplier').removeEventListener('keydown', teclaEnter)
+}
+
+// manipulando o evento (tecla Enter)
+document.getElementById('frmSupplier').addEventListener('keydown', teclaEnter)
+
 //Array usado nos métodos para manipulação da estrutura de dados
 let arrayFornecedor = []
 //CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //Passo 1 - Slide (capturar os dados dos inputs do form)
 let formFornecedor = document.getElementById('frmSupplier')
+let idFornecedor = document.getElementById('inputIdSupplier')
 let nomeFornecedor = document.getElementById('inputNameSupplier')
 let foneFornecedor = document.getElementById('inputPhoneSupplier')
 let siteFornecedor = document.getElementById('inputSiteSupplier')
