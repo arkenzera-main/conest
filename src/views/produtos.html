@@ -19,42 +19,44 @@
                 <input type="text" class="form-control" id="searchProduct" maxlength="30" spellcheck="false">
             </div>
             <div class="col-md-4">
-                <button class="btn btn-primary" id="btnRead" onclick="buscarProduto()">Buscar</button>
-                <button class="btn btn-primary" id="btnReadCod" onclick="buscarProdutoCod()">Buscar Código</button>
+                <button class="btn btn-primary" id="btnRead" onclick="buscarProduto()" type="button">Buscar</button>
+                <button class="btn btn-primary" id="btnReadCod" onclick="buscarProdutoCod()" type="button">Buscar Código</button>
             </div>
             <hr class="mt-4 border-primary border -1">
 
             <!-- ID do produto (oculto) -->
             <div class="col-md-6" id="idProduct">
-                <input type="text" id="inputProduct" class="form-control" placeholder="id">
+                <input type="text" id="inputIdProduct" class="form-control" placeholder="id">
             </div>
+            <div class="bloqueio input">
 
-            <!-- Nome do produto -->
-            <div class="col-md-8">
-                <label for="inputNameProduct" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="inputNameProduct" spellcheck="false" required maxlength="50">
+            
+                <!-- Nome do produto -->
+                <div class="col-md-8">
+                    <label for="inputNameProduct" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="inputNameProduct" spellcheck="false" required maxlength="50">
+                </div>
+
+                <!-- Código de barras -->
+                <div class="col-md-4">
+                    <label for="inputBarProduct" class="form-label">Código de barras</label>
+                    <input type="text" class="form-control" id="inputCodProduct" spellcheck="false" required maxlength="15">
+                </div>
+
+                <!-- Preço -->
+                <div class="col-md-8">
+                    <label for="inputPrecoProduct" class="form-label">Preço</label>
+                    <input type="text" class="form-control" id="inputPriceProduct" spellcheck="false" maxlength="8">
+                </div>
+
+                <!-- Botões -->
+                <div class="mt-5">
+                    <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
+                    <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
+                    <button type="button" class="btn btn-danger" id="btnDelete" onclick="excluirProduto()">Excluir</button>
+                    <button type="reset" class="btn" id="btnReset" onclick="resetForm()"></button>
+                </div>
             </div>
-
-            <!-- Código de barras -->
-            <div class="col-md-4">
-                <label for="inputBarProduct" class="form-label">Código de barras</label>
-                <input type="text" class="form-control" id="inputBarProduct" spellcheck="false" required maxlength="15">
-            </div>
-
-            <!-- Preço -->
-            <div class="col-md-8">
-                <label for="inputPrecoProduct" class="form-label">Preço</label>
-                <input type="text" class="form-control" id="inputPrecoProduct" spellcheck="false" maxlength="8">
-            </div>
-
-            <!-- Botões -->
-            <div class="mt-5">
-                <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
-                <button type="submit" class="btn btn-warning" id="btnUptade">Editar</button>
-                <button type="submit" class="btn btn-danger" id="btnDelete">Excluir</button>
-                <button type="reset" class="btn" id="btnReset" oncanplay=""></button>
-            </div>
-
         </form>
     </div>
 
