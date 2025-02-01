@@ -5,13 +5,13 @@
 
 const mongoose = require('mongoose')
 
-// definir a URL e autenticação do banco de dados (acrescentar ao final da url um nome para o banco de dados)
+// Definir a URl e autenticação do banco de dados (acrescentar ao final da URL um nome para o banco de dados)
 const url = 'mongodb+srv://ademir:123senac@flusterconest.6u8u5.mongodb.net/conestDB'
 
 // status de conexão ("ícone de conexão")
 let isConnected = false
 
-// Só estabelecer uma conexão se não estiver conectado 
+// só estabelecer uma conexão se não estiver conectado
 const dbConnect = async () => {
     if (isConnected === false) {
         await conectar()
@@ -22,12 +22,12 @@ const dbConnect = async () => {
 const conectar = async () => {
     if (isConnected === false) {
         try {
-            // a linha abaixo abre a conexão com o MongoDB
+            // A linha abaixo abre a conexão com o MongoDB
             await mongoose.connect(url)
-            isConnected = true //sinalizar que o banco está conectado
+            isConnected = true // sinalizar que o banco está conectado
             console.log("MongoDB conectado")
         } catch (error) {
-            console.log(`Problema detectado: ${error}`)
+            console.log(`Problema Detectado: ${error}`)
         }
     }
 }
@@ -36,15 +36,15 @@ const conectar = async () => {
 const desconectar = async () => {
     if (isConnected === true) {
         try {
-            // a linha abaixo encerra a conexão com o MongoDB
+            // A linha encerra a conexão com o MongoDB
             await mongoose.disconnect(url)
-            isConnected = false //sinalizar que o banco não está conectado
+            isConnected = false // sinalizar que o banco não está conectado
             console.log("MongoDB desconectado")
         } catch (error) {
-            console.log(`Problema detectado: ${error}`)
+            console.log(`Problema Detectado: ${error}`)
         }
     }
 }
 
-// exportar para p main as funções desejadas
-module.exports = {dbConnect, desconectar}
+// exportar para o main as funções desejadas
+module.exports = { dbConnect, desconectar }
