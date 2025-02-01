@@ -531,14 +531,7 @@ ipcMain.on('new-supplier', async (event, fornecedor) => {
 
 
 // CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-ipcMain.on('dialog-search', () => {
-    dialog.showMessageBox({
-        type: 'warning',
-        title: 'Atenção!',
-        message: 'Preencha um nome no campo de busca',
-        buttons: ['OK']
-    })
-})
+
 
 ipcMain.on('search-supplier', async (event, forNome) => {
     // teste de recebimento do nome do fornecedor a ser pesquisado (passo 2)
@@ -690,14 +683,7 @@ ipcMain.on('new-product', async (event, produto) => {
 
 
 // CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-ipcMain.on('dialog-search', () => {
-    dialog.showMessageBox({
-        type: 'warning',
-        title: 'Atenção!',
-        message: 'Preencha um nome no campo de busca',
-        buttons: ['OK']
-    })
-})
+
 
 ipcMain.on('search-product', async (event, proNome) => {
     // teste de recebimento do nome do produto a ser pesquisado (passo 2)
