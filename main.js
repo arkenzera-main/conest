@@ -60,8 +60,10 @@ function aboutWindow() {
     let about
     if (main) {
         about = new BrowserWindow({
-            width: 1100,
-            height: 800,
+            width: 1280,
+            height: 920,
+            minWidth: 1024,
+            minHeight: 600,
             autoHideMenuBar: true,
             resizable: false,
             minimizable: false,
@@ -92,8 +94,10 @@ function clientWindow() {
     const main = BrowserWindow.getFocusedWindow()
     if (main) {
         client = new BrowserWindow({
-            width: 1100,
-            height: 800,
+            width: 1280,
+            height: 920,
+            minWidth: 1024,
+            minHeight: 600,
             //autoHideMenuBar: true,
             resizable: true,
             minimizable: true,
@@ -125,8 +129,10 @@ function supplierWindow() {
     const main = BrowserWindow.getFocusedWindow()
     if (main) {
         supplier = new BrowserWindow({
-            width: 1100,
-            height: 800,
+            width: 1280,
+            height: 920,
+            minWidth: 1024,
+            minHeight: 600,
             autoHideMenuBar: true,
             resizable: true,
             minimizable: true,
@@ -158,8 +164,10 @@ function productsWindow() {
     const main = BrowserWindow.getFocusedWindow()
     if (main) {
         products = new BrowserWindow({
-            width: 1100,
-            height: 800,
+            width: 1280,
+            height: 920,
+            minWidth: 1024,
+            minHeight: 600,
             autoHideMenuBar: true,
             resizable: true,
             minimizable: true,
