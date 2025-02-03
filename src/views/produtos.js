@@ -136,27 +136,46 @@ function buscarProduto() {
 function buscarProdutoPorBarcode() {
     // Passo 1 (slide)
     let barNome = document.getElementById('searchBarcode').value
-    console.log(barNome)
-    // Passo 2 (slide) - Enviar o pedido de busca do produto ao main
-    api.buscarProdutoPorBarcode(barNome)
-    // Passo 5 - Recebimento dos dados do produto
-    api.renderizarBarcode((event, dadosBarcode) => {
-        // teste de recebimento dos dados do produto
-        console.log(dadosBarcode)
-        // Passo 6 (slide) - Renderização dos dados dos produto no formulário
-        const barcodeRenderizado = JSON.parse(dadosBarcode)
-        arrayProduto = barcodeRenderizado
-        // teste para entendimento da lógica
-        console.log(arrayProduto)
-        // percorrer o array de produtos, extrair os dados e setar (preencher) os campos do formulário
-        arrayProduto.forEach((c) => {
-            document.getElementById('inputNameProduct').value = c.nomeProduto
-            document.getElementById('inputBarcodeProduct').value = c.barcodeProduto
-            document.getElementById('inputPriceProduct').value = c.precoProduto
-            document.getElementById('inputIdProduct').value = c._id
+    //console.log(barNome)
+    if (barNome === "") {
+        api.validarBusca() // Validar campo obrigatório
+        getElementById('searchBarcode').focus()
+    } else {
+        // Passo 2 (slide) - Enviar o pedido de busca do produto ao main
+        api.buscarProdutoPorBarcode(barNome)
+        // Passo 5 - Recebimento dos dados do produto
+        api.renderizarBarcode((event, dadosBarcode) => {
+            // teste de recebimento dos dados do produto
+            console.log(dadosBarcode)
+            // Passo 6 (slide) - Renderização dos dados dos produto no formulário
+            const barcodeRenderizado = JSON.parse(dadosBarcode)
+            arrayProduto = barcodeRenderizado
+            // teste para entendimento da lógica
+            console.log(arrayProduto)
+            // percorrer o array de produtos, extrair os dados e setar (preencher) os campos do formulário
+            arrayProduto.forEach((c) => {
+                document.getElementById('inputNameProduct').value = c.nomeProduto
+                document.getElementById('inputBarcodeProduct').value = c.barcodeProduto
+                document.getElementById('inputPriceProduct').value = c.precoProduto
+                document.getElementById('inputIdProduct').value = c._id
+            })
         })
+    }
+    api.setarCodigoProduto(() => {
+        //setar o nome do produto       
+        let campoNome = document.getElementById('searchBarcode').value
+        document.getElementById('inputNameProduct').focus()
+        document.getElementById('inputNameProduct').value = campoNome
+        //limpar o campo de busca e remover o foco
+        getElementById('searchBarcode').value = ""
+        getElementById('searchBarcode').blur()
+        //liberar o botão adicionar
+        btnCreate.disabled = false
+        //restaurar o padrão da tecla Enter
+        restaurarEnter()
     })
 }
+
 // Fim do CRUD Read por Código de Barras <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 // CRUD Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
