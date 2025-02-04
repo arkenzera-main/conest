@@ -9,7 +9,7 @@ const clienteSchema = new Schema({
     nomeCliente:{
         type: String
     },
-    foneCliente: {
+    dddCliente: {
         type: String
     },
     emailCliente: {
@@ -35,7 +35,17 @@ const clienteSchema = new Schema({
     },
     ufCliente: {
         type: String
+    },
+    complementoCliente: {
+        type: String
+    },
+    telefoneCliente: {
+        type: String
+    },
+    cpfCliente: {
+        type: String
     }
+
 })
 
 //Para modificar o nome da coleção ("tabela"), basta modificar na linha abaixo o rótulo 'Clientes", sempre iniciando com letra maiúscula.

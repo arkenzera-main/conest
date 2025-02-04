@@ -5,18 +5,22 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-bottom: 60px; /* Altura do footer + espaçamento */
+    padding-bottom: 60px;
+    /* Altura do footer + espaçamento */
 }
 
 .container {
     flex: 1;
     max-width: 1200px;
     margin: 30px auto;
-    background: white;
+    background: #ebebeb85;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    overflow-y: auto; /* Permite scroll interno se necessário */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    /* Permite scroll interno se necessário */
+    max-height: 100vh;
+    overflow: hidden;
 }
 
 /* Footer ajustado */
@@ -35,7 +39,7 @@ footer {
 }
 
 footer p {
-    color: #fff;
+    color: white;
     margin: 0;
     font-size: 0.9rem;
 }
@@ -55,4 +59,80 @@ footer p {
 .disconnected {
     background-color: #dc3545;
     box-shadow: 0 0 8px #dc3545;
+}
+
+.form-control {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.form-label {
+    margin-bottom: 0.2rem;
+    font-size: 0.9rem;
+}
+
+.btn {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+#inputUfClient {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+#inputUfClient {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1em;
+}
+
+#idClient {
+    display: none;
+  }
+
+#idSupplier {
+    display: none;
+}
+
+#idProduct {
+    display: none;
+}
+
+/* Ajuste para alinhamento vertical dos labels */
+.row.g-2 .form-label {
+    font-size: 0.8rem;
+    margin-bottom: 0.1rem;
+}
+
+/* Garantir que os campos fiquem colados */
+.row.g-2 [class^="col"] {
+    padding-right: 4px;
+    padding-left: 4px;
+}
+
+#inputUfClient {
+    max-width: 80px; /* Largura máxima */
+    padding-right: 1.5rem; /* Espaço para a seta customizada */
+    cursor: pointer;
+}
+
+/* Ajuste do dropdown para tamanho pequeno */
+#inputUfClient option {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+}
+
+#inputUfSupplier {
+    max-width: 80px; /* Largura máxima */
+    padding-right: 1.5rem; /* Espaço para a seta customizada */
+    cursor: pointer;
+}
+
+/* Ajuste do dropdown para tamanho pequeno */
+#inputUfSupplier option {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
 }

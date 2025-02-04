@@ -7,7 +7,7 @@ const foco = document.getElementById('searchSupplier')
 
 //Mudar as propriedades do documento html ao iniciar a janela
 document.addEventListener('DOMContentLoaded', () => {
-    btnCreate.disabled = true
+    ///btnCreate.disabled = true
     btnUpdate.disabled = true
     btnDelete.disabled = true
     foco.focus()
@@ -36,7 +36,7 @@ let arrayFornecedor = []
 let formFornecedor = document.getElementById('frmSupplier')
 let idFornecedor = document.getElementById('inputIdSupplier')
 let nomeFornecedor = document.getElementById('inputNameSupplier')
-let foneFornecedor = document.getElementById('inputPhoneSupplier')
+let dddFornecedor = document.getElementById('inputdddSupplier')
 let siteFornecedor = document.getElementById('inputSiteSupplier')
 let cepFornecedor = document.getElementById('inputCepSupplier')
 let logradouroFornecedor = document.getElementById('inputLogradouroSupplier')
@@ -46,6 +46,7 @@ let cidadeFornecedor = document.getElementById('inputCidadeSupplier')
 let ufFornecedor = document.getElementById('inputUfSupplier')
 let cpnjFornecedor = document.getElementById('inputCnpjSupplier')
 let complementoFornecedor = document.getElementById('inputComplementoSupplier')
+let telefoneFornecedor = document.getElementById('inputPhoneSupplier')
 
 // CRUD Create/Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // Evento associado ao botão adicionar (quando o botão for pressionado)
@@ -53,7 +54,7 @@ formFornecedor.addEventListener('submit', async (event) => {
     // Evitar o comportamento padrão de envio em um form
     event.preventDefault()
     // Teste importante! (fluxo dos dados)
-    // console.log(nomeFornecedor.value, foneForncedor.value, emailFornecedor.value)
+    // console.log(nomeFornecedor.value, dddForncedor.value, emailFornecedor.value)
 
     // Passo 2 - slide (envio das informações para o main)
     // Estratégia para determinar se é um novo cadastro de fornecedor ou a edição de um fornecedor já existente
@@ -61,7 +62,7 @@ formFornecedor.addEventListener('submit', async (event) => {
         // Criar um objeto
         const fornecedor = {
             nomeFor: nomeFornecedor.value,
-            foneFor: foneFornecedor.value,
+            dddFor: dddFornecedor.value,
             siteFor: siteFornecedor.value,
             cepFor: cepFornecedor.value,
             logradouroFor: logradouroFornecedor.value,
@@ -70,7 +71,8 @@ formFornecedor.addEventListener('submit', async (event) => {
             cidadeFor: cidadeFornecedor.value,
             ufFor: ufFornecedor.value,
             cnpjFor: cpnjFornecedor.value,
-            complementoFor: complementoFornecedor.value
+            complementoFor: complementoFornecedor.value,
+            telefoneFor: telefoneFornecedor.value
         }
         api.novoFornecedor(fornecedor)
     } else {
@@ -78,7 +80,7 @@ formFornecedor.addEventListener('submit', async (event) => {
         const fornecedor = {
             idFor: idFornecedor.value,
             nomeFor: nomeFornecedor.value,
-            foneFor: foneFornecedor.value,
+            dddFor: dddFornecedor.value,
             siteFor: siteFornecedor.value,
             cepFor: cepFornecedor.value,
             logradouroFor: logradouroFornecedor.value,
@@ -87,7 +89,8 @@ formFornecedor.addEventListener('submit', async (event) => {
             cidadeFor: cidadeFornecedor.value,
             ufFor: ufFornecedor.value,
             cnpjFor: cpnjFornecedor.value,
-            complementoFor: complementoFornecedor.value
+            complementoFor: complementoFornecedor.value,
+            telefoneFor: telefoneFornecedor.value
         }
         api.editarFornecedor(fornecedor)
     }
@@ -121,7 +124,7 @@ function buscarFornecedor() {
             // percorrer o array de fornecedor, extrair os dados e setar (preencher) os campos do formulário
             arrayFornecedor.forEach((c) => {
                 document.getElementById('inputNameSupplier').value = c.nomeFornecedor
-                document.getElementById('inputPhoneSupplier').value = c.foneFornecedor
+                document.getElementById('inputdddSupplier').value = c.dddFornecedor
                 document.getElementById('inputSiteSupplier').value = c.siteFornecedor
                 document.getElementById('inputCepSupplier').value = c.cepFornecedor
                 document.getElementById('inputLogradouroSupplier').value = c.logradouroFornecedor
@@ -132,6 +135,7 @@ function buscarFornecedor() {
                 document.getElementById('inputIdSupplier').value = c._id
                 document.getElementById('inputCnpjSupplier').value = c.cpnjFornecedor
                 document.getElementById('inputComplementoSupplier').value = c.complementoFornecedor
+                document.getElementById('inputPhoneSupplier').value = c.telefoneFornecedor
                 //limpar o campo de busca e remover o foco
                 foco.value = ""
 
@@ -266,7 +270,7 @@ cepFornecedor.addEventListener('blur', async () => {
 
                 // Determina o DDD baseado na UF ou cidade
                 const ddd = getDDD(data.uf, data.localidade)
-                foneFornecedor.value = `(${ddd}) `
+                dddFornecedor.value = `(${ddd}) `
             }
         } catch (error) {
             console.log("Erro ao buscar CEP:", error)

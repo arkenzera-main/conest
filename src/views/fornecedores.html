@@ -55,16 +55,19 @@
             </div>
 
             <!-- DDD do Fornecedor -->
-            <div class="col-md-4">
+            <div class="col-md-2 col-3">
                 <label for="inputdddSupplier" class="form-label">DDD</label>
-                <input class="form-control" type="tel" id="inputdddSupplier" maxlength="15" required>
+                <input class="form-control" type="tel" id="inputdddSupplier" maxlength="2" required>
             </div>
 
-            <!-- Telefone do Fornecedor
-            <div class="col-md-4">
+            <!-- TELEFONE do fornecedor -->
+            <div class="col-md-4 col-9">
                 <label for="inputPhoneSupplier" class="form-label">Telefone</label>
-                <input class="form-control" type="tel" id="inputPhoneSupplier" maxlength="15" required>
-            </div>-->
+                <input class="form-control" type="tel" id="inputPhoneSupplier" spellcheck="false" maxlength="9"
+                    required>
+            </div>
+
+            
 
             <!-- Novo campo: Logradouro -->
             <div class="col-md-4">
@@ -94,14 +97,13 @@
             <!-- Novo campo: Complemento--> <!--*****************************************************************-->
             <div class="col-md-4">
                 <label for="inputComplementoSupplier" class="form-label">Complemento</label>
-                <input class="form-control" type="text" id="inputComplementoSupplier" required>
+                <input class="form-control" type="text" id="inputComplementoSupplier">
             </div>
 
             <!-- Novo campo: UF -->
-            <div class="col-md-4">
+            <div class="col-md-2 col-3">
                 <label for="inputUfSupplier" class="form-label">UF</label>
                 <select class="form-control" id="inputUfSupplier" required>
-                    <option value="">Selecione o estado</option>
                     <option value="AC">AC</option>
                     <option value="AL">AL</option>
                     <option value="AP">AP</option>

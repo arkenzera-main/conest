@@ -127,6 +127,7 @@ function buscarCliente() {
             console.log(arrayCliente)
             // percorrer o array de clientes, extrair os dados e setar (preencher) os campos do formulário
             arrayCliente.forEach((c) => {
+                document.getElementById('inputIdClient').value = c._id
                 document.getElementById('inputNameClient').value = c.nomeCliente
                 document.getElementById('inputdddClient').value = c.dddCliente
                 document.getElementById('inputEmailClient').value = c.emailCliente
@@ -136,10 +137,9 @@ function buscarCliente() {
                 document.getElementById('inputBairroClient').value = c.bairroCliente
                 document.getElementById('inputCidadeClient').value = c.cidadeCliente
                 document.getElementById('inputUfClient').value = c.ufCliente
-                document.getElementById('inputIdClient').value = c._id
-                document.getElementById('inputphoneClient').value = c._telefoneCliente
-                document.getElementById('inputCpfClient').value = c._cpfCliente
-                document.getElementById('inputComplementoClient').value = c._complementoCliente
+                document.getElementById('inputphoneClient').value = c.telefoneCliente
+                document.getElementById('inputCpfClient').value = c.cpfCliente
+                document.getElementById('inputComplementoClient').value = c.complementoCliente
 
                 //limpar o campo de busca e remover o foco
                 foco.value = ""
@@ -299,3 +299,24 @@ function resetForm() {
     location.reload()
 }
 // Fim - Reset Form <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+formCliente.addEventListener('submit', async (event) => {
+    event.preventDefault()
+    
+    if (!TestaCPF()) {
+        dialog.showMessageBox({
+            type: 'warning',
+            title: 'CPF Inválido',
+            message: 'Por favor, digite um CPF válido!',
+            buttons: ['OK']
+        })
+        return
+    }
+
+    // Resto do código de submit...
+    if (idCliente.value === "") {
+        // Criar novo cliente
+    } else {
+        // Editar cliente
+    }
+})

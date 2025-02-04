@@ -9,7 +9,7 @@ const produtoSchema = new Schema({
     nomeProduto: {
         type: String
     },
-    codProduto: {
+    barcodeProduto: {
         type: String
     },
     precoProduto: {

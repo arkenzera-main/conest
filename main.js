@@ -310,7 +310,7 @@ const template = [
         label: 'Ajuda',
         submenu: [
             {
-                label: 'Repositório',
+                label: 'Repositório: https://github.com/arkenzera-main',
                 click: () => shell.openExternal('')
             },
 
@@ -427,7 +427,7 @@ ipcMain.on('update-client', async (event, cliente) => {
         const clienteEditado = await clienteModel.findByIdAndUpdate(
             cliente.idCli, {
             nomeCliente: cliente.nomeCli,
-            foneCliente: cliente.foneCli,
+            dddCliente: cliente.foneCli,
             emailCliente: cliente.emailCli,
             cepCliente: cliente.cepCli,
             logradouroCliente: cliente.logradouroCli,
@@ -506,7 +506,7 @@ ipcMain.on('new-supplier', async (event, fornecedor) => {
         // Criar um novo objeto usando a classe modelo
         const novoFornecedor = new fornecedorModel({
             nomeFornecedor: fornecedor.nomeFor,
-            foneFornecedor: fornecedor.foneFor,
+            dddFornecedor: fornecedor.dddFor,
             siteFornecedor: fornecedor.siteFor,
             cepFornecedor: fornecedor.cepFor,
             logradouroFornecedor: fornecedor.logradouroFor,
@@ -515,8 +515,8 @@ ipcMain.on('new-supplier', async (event, fornecedor) => {
             cidadeFornecedor: fornecedor.cidadeFor,
             ufFornecedor: fornecedor.ufFor,
             cpnjFornecedor: fornecedor.cnpjFor,
-            complementoFornecedor: fornecedor.complementoFor
-
+            complementoFornecedor: fornecedor.complementoFor,
+            telefoneFornecedor: fornecedor.telefoneFor
         })
         // A linha abaixo usa a biblioteca moongoose para salvar
         await novoFornecedor.save()
@@ -587,7 +587,7 @@ ipcMain.on('update-supplier', async (event, fornecedor) => {
         const fornecedorEditado = await fornecedorModel.findByIdAndUpdate(
             fornecedor.idFor, {
             nomeFornecedor: fornecedor.nomeFor,
-            foneFornecedor: fornecedor.foneFor,
+            dddFornecedor: fornecedor.dddFor,
             siteFornecedor: fornecedor.siteFor,
             cepFornecedor: fornecedor.cepFor,
             logradouroFornecedor: fornecedor.logradouroFor,
@@ -596,7 +596,8 @@ ipcMain.on('update-supplier', async (event, fornecedor) => {
             cidadeFornecedor: fornecedor.cidadeFor,
             ufFornecedor: fornecedor.ufFor,
             cpnjFornecedor: fornecedor.cnpjFor,
-            complementoFornecedor: fornecedor.complementoFor
+            complementoFornecedor: fornecedor.complementoFor,
+            telefoneFornecedor: fornecedor.telefoneFor
         },
             {
                 new: true

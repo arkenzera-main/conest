@@ -158,6 +158,19 @@ function buscarProdutoPorBarcode() {
                 document.getElementById('inputBarcodeProduct').value = c.barcodeProduto
                 document.getElementById('inputPriceProduct').value = c.precoProduto
                 document.getElementById('inputIdProduct').value = c._id
+                //limpar o campo de busca e remover o foco
+                document.getElementById('searchBarcode').value = ""
+
+                document.getElementById('searchBarcode').disabled = true
+                btnRead.disabled = true
+                btnCreate.disabled = true
+
+                //foco.blur()
+                //liberar os botões editar e excluir
+                document.getElementById('btnUpdate').disabled = false
+                document.getElementById('btnDelete').disabled = false
+                //restaurar o padrão da tecla Enter
+                restaurarEnter()
             })
         })
     }
