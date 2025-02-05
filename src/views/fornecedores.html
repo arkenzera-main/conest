@@ -39,7 +39,8 @@
             <!-- Site do Fornecedor -->
             <div class="col-md-4">
                 <label for="inputSiteSupplier" class="form-label">Site</label>
-                <input class="form-control" type="text" id="inputSiteSupplier" spellcheck="false" maxlength="50">
+                <input class="form-control" type="url" id="inputSiteSupplier" spellcheck="false" maxlength="50"  pattern="^https:\/\/.+" title="O site deve começar com https">
+                <button type="button" class="mt-2 btn btn-secondary" onclick="acessarSite()" id="botaoAcessarSite">Acessar site</button>
             </div>
 
             <!-- Novo campo: CNPJ --> <!--*****************************************************************-->

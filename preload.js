@@ -49,4 +49,7 @@ contextBridge.exposeInMainWorld('api', {
     validarBusca: () => ipcRenderer.send('dialog-search'),
     validarBuscaCod: () => ipcRenderer.send('dialog-searchCode'),
 
+    // Api para abrir site na aba fornecedores
+    abrirSite: (site) => ipcRenderer.send('url-site', site),
+
 })

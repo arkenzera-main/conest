@@ -1,4 +1,4 @@
-const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain, dialog } = require('electron/main')
+const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain, dialog, globalShortcut } = require('electron/main')
 const path = require('node:path')
 
 // Importação módulo de conexão 
@@ -30,8 +30,8 @@ function createWindow() {
         }
     })
 
-    // Menu personalizado (comentar para debugar)
-    // Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+    // Menu personalizado 
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 
     win.loadFile('./src/views/index.html')
 
@@ -98,7 +98,7 @@ function clientWindow() {
             height: 920,
             minWidth: 1024,
             minHeight: 600,
-            //autoHideMenuBar: true,
+            autoHideMenuBar: true,
             resizable: true,
             minimizable: true,
             //titleBarStyle: "hidden" // Esconder a barra de estilo (ex: totem de auto atendimento)
@@ -113,12 +113,12 @@ function clientWindow() {
     client.loadFile('./src/views/clientes.html')
 
     //client.once('ready-to-show', () => {
-       // dialog.showMessageBox(client, {
-           // type: 'info',
-           // title: 'Aviso',
-           // message: 'Pesquise um cliente antes de continuar',
-          //  buttons: ['OK']
-       // })
+    // dialog.showMessageBox(client, {
+    // type: 'info',
+    // title: 'Aviso',
+    // message: 'Pesquise um cliente antes de continuar',
+    //  buttons: ['OK']
+    // })
     //})
 }
 
@@ -148,12 +148,12 @@ function supplierWindow() {
     supplier.loadFile('./src/views/fornecedores.html')
 
     //supplier.once('ready-to-show', () => {
-       // dialog.showMessageBox(supplier, {
-         //   type: 'info',
-           // title: 'Aviso',
-          //  message: 'Pesquise um forncedor antes de continuar',
-          //  buttons: ['OK']
-       // })
+    // dialog.showMessageBox(supplier, {
+    //   type: 'info',
+    // title: 'Aviso',
+    //  message: 'Pesquise um forncedor antes de continuar',
+    //  buttons: ['OK']
+    // })
     //})
 }
 
@@ -182,13 +182,13 @@ function productsWindow() {
 
     products.loadFile('./src/views/produtos.html')
 
-   // products.once('ready-to-show', () => {
-       // dialog.showMessageBox(products, {
-           // type: 'info',
-           // title: 'Aviso',
-           // message: 'Pesquise um produto antes de continuar',
-           // buttons: ['OK']
-       // })
+    // products.once('ready-to-show', () => {
+    // dialog.showMessageBox(products, {
+    // type: 'info',
+    // title: 'Aviso',
+    // message: 'Pesquise um produto antes de continuar',
+    // buttons: ['OK']
+    // })
     //})
 }
 
@@ -219,6 +219,21 @@ function reportsWindow() {
 
 // Execução assíncrona do aplicativo electron
 app.whenReady().then(() => {
+    // Registrar atalho global para devtools em qualquer janela ativa
+    globalShortcut.register('Ctrl+Shift+I', () => {
+        const tools = BrowserWindow.getFocusedWindow()
+        if (tools) {
+            tools.webContents.openDevTools()
+        }
+    })
+
+    // Desregistrar atalhos globais antes de sair
+    app.on('will-quit', () => {
+        globalShortcut.unregisterAll()
+    })
+
+
+
     createWindow()
 
     // Melhor local para estabelecer a conexão com o banco de dados
@@ -251,11 +266,37 @@ app.on('window-all-closed', () => {
     }
 })
 
+// Reduzir logs não críticos ( mensagens no console quando executar Devtools)
+app.commandLine.appendSwitch('log-level', '3')
+
+
+
+
+
+
+
+
+
 // Template do menu
 const template = [
     {
-        label: 'Arquivo',
+        label: 'Cadastro',
         submenu: [
+            {
+                label: 'Clientes',
+                click: () => clientWindow(),
+            },
+
+            {
+                label: 'Fornecedores',
+                click: () => supplierWindow(),
+            },
+
+            {
+                label: 'Produtos',
+                click: () => productsWindow(),
+            },
+
             {
                 label: 'Novo',
                 accelerator: 'CmdOrCtrl+N'
@@ -285,6 +326,14 @@ const template = [
 
         ]
     },
+    {
+        label: 'Relatórios',
+            submenu: [
+
+            ]
+    },
+        
+
 
     {
         label: 'Zoom',
@@ -494,6 +543,15 @@ ipcMain.on('delete-client', async (event, idCliente) => {
 /********************************************/
 /*************** Fornecedores **************/
 /******************************************/
+
+// Acessar site externo
+ipcMain.on('url-site', (event, site) => {
+    let url = site.url
+    //console.log(url)
+    shell.openExternal(url)
+
+})
+
 
 // CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // Recebimento dos dados do formulário do fornecedor

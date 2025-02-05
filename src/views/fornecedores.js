@@ -29,6 +29,45 @@ function restaurarEnter() {
 // manipulando o evento (tecla Enter)
 document.getElementById('frmSupplier').addEventListener('keydown', teclaEnter)
 
+
+let usuarioRemoveuHTTPS = false; // Flag para rastrear se o usuário apagou o HTTPS
+
+// Função acessar site >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function acessarSite() {
+    let urlFornecedor = document.getElementById('inputSiteSupplier').value.trim();
+    const url = {
+        url: urlFornecedor
+    }
+    if (!urlFornecedor.startsWith('https://')) {
+        urlFornecedor = 'https://' + url.replace(/^https?:\/\//, '');
+    }
+    //console.log(urlFornecedor)
+    // Enviar ao main o site
+    api.abrirSite(url)
+}
+
+// Adicionar o https via javascript
+document.getElementById('inputSiteSupplier').addEventListener('input', function(e) {
+    const input = e.target;
+    const valor = input.value.trim();
+  
+    // Se o usuário apagar completamente o "https://", ative a flag
+    if (valor === '') {
+      usuarioRemoveuHTTPS = true;
+    }
+  
+    // Se o usuário tentar digitar algo sem "https://" (e a flag estiver desativada)
+    if (!usuarioRemoveuHTTPS && !valor.startsWith('https://')) {
+      input.value = 'https://' + valor.replace(/^https?:\/\//, '');
+    }
+  });
+
+
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
 // Array usado nos métodos para manipulação da estrutura de dados 
 let arrayFornecedor = []
 
@@ -286,6 +325,9 @@ api.resetarFormulario((args) => {
 
 function resetForm() {
     // Recarregar a página
+    
     location.reload()
+    document.getElementById('inputSiteSupplier').value = 'https://';
+    usuarioRemoveuHTTPS = false; // Reseta a flag
 }
 // Fim - Reset Form <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
