@@ -19,17 +19,27 @@
                 <input type="text" class="form-control" id="searchProduct" maxlength="30" spellcheck="false">
             </div>
             <div class="col-md-6">
-                <button type="button" class="btn btn-primary" id="btnRead" onclick="buscarProduto()">Buscar por Nome</button>
+                <button type="button" class="btn btn-primary" id="btnRead" onclick="buscarProduto()">Buscar por
+                    Nome</button>
             </div>
 
             <!-- Buscar Produto Por Barcode -->
-            <div class="col-md-6">
-                <input type="text" class="form-control" id="searchBarcode" maxlength="30" spellcheck="false">
+            <div class="col-md-8 mb-3">
+                <input type="text" class="form-control form-control-sm" id="searchBarcode" maxlength="30"
+                    spellcheck="false" placeholder="Digite ou escaneie o código de barras">
             </div>
-            <div class="col-md-6">
-                <button type="button" class="btn btn-info" id="btnRead" onclick="buscarProdutoPorBarcode()">Buscar por Código</button>
+
+            <div class="col-md-4 mb-3">
+                <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn p-0 border-0 bg-transparent" onclick="buscarProdutoPorBarcode()"
+                        title="Buscar por código de barras" data-bs-toggle="tooltip">
+                        <img src="../public/img/barcode.png" alt="Ícone de código de barras"
+                            class="img-barcode-button hover-effect">
+                    </button>
+                </div>
             </div>
-            <hr class="mt-4 border border-primary border -1">
+
+            <hr class="mt-1 border border-primary border-1">
 
             <!-- ID do Produto -->
             <div class="col-md-7" id="idProduct">
@@ -55,6 +65,12 @@
                 <label for="inputPriceProduct" class="form-label">Preço</label>
                 <input class="form-control" type="text" id="inputPriceProduct" spellcheck="false" maxlength="50">
             </div>
+
+            <!-- Imagem do Produto -->
+             <div class="col-md-7">
+                <img src="../public/img/camera.png" alt="Imagem" id="productPreview">
+                <input type="file" id="imageProduct">
+             </div>
 
             <!-- Botões -->
             <div class="mt-5">

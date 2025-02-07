@@ -14,7 +14,10 @@ const produtoSchema = new Schema({
     },
     precoProduto: {
         type: String
-    }
+    },
+    imagemProduto: {
+        type: String
+    },
 })
 
 //Para modificar o nome da coleção ("tabela"), basta modificar na linha abaixo o rótulo 'Fornecedores", sempre iniciando com letra maiúscula.

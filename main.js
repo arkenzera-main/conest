@@ -553,6 +553,8 @@ ipcMain.on('url-site', (event, site) => {
 })
 
 
+
+
 // CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // Recebimento dos dados do formulário do fornecedor
 ipcMain.on('new-supplier', async (event, fornecedor) => {
