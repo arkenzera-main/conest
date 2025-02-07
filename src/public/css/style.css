@@ -183,3 +183,9 @@ footer p {
     right: 50px;
     top: 260px;
 }
+
+#imageProduct {
+    position: fixed;
+    right: 50px;
+    top: 535px;
+}
