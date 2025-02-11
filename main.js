@@ -270,8 +270,10 @@ app.on('window-all-closed', () => {
 app.commandLine.appendSwitch('log-level', '3')
 
 
-
-
+// Mostar erro de validação do site na aba fornecedores
+ipcMain.on('mostrar-erro', (event, mensagem) => {
+    dialog.showErrorBox('Erro de Validação', mensagem)
+})
 
 
 
@@ -545,11 +547,21 @@ ipcMain.on('delete-client', async (event, idCliente) => {
 /******************************************/
 
 // Acessar site externo
+// main.js (parte modificada)
 ipcMain.on('url-site', (event, site) => {
     let url = site.url
-    //console.log(url)
-    shell.openExternal(url)
-
+    
+    // Validar URL antes de abrir
+    try {
+        new URL(url) // Isso irá falhar se a URL for inválida
+        if (/^https?:\/\//i.test(url)) { // Permitir HTTP/HTTPS
+            shell.openExternal(url)
+        } else {
+            dialog.showErrorBox('Erro', 'Protocolo inválido. Use HTTP/HTTPS.')
+        }
+    } catch (error) {
+        dialog.showErrorBox('Erro', 'URL inválida ou formato incorreto')
+    }
 })
 
 
@@ -802,8 +814,21 @@ ipcMain.on('search-barcode', async (event, barCode) => {
     // ATENÇÃO: nomeProduto -> model | proNome -> renderizador
     try {
         const dadosBarcode = await produtoModel.find({
-            barcodeProduto: new RegExp(barCode, 'i')
+            barcodeProduto: barCode
         })
+
+        if (dadosBarcode.length === 0) {
+            dialog.showMessageBox(products, {
+                type: 'warning',
+                title: 'Produto não encontrado',
+                message: 'Deseja cadastrar um novo produto com este código?',
+                buttons: ['Sim', 'Não']
+            }).then((result) => {
+                if (result.response === 0) {
+                    event.reply('set-barcode', barCode)
+                }
+            })
+        }
         console.log(dadosBarcode) // teste do passo 3 e 4
         // Passo 5 - slide -> enviar os dados do produto para o renderizador (JSON.stringify converte para JSON)
         event.reply('data-barcode', JSON.stringify(dadosBarcode))
@@ -812,6 +837,19 @@ ipcMain.on('search-barcode', async (event, barCode) => {
     }
 })
 // Fim CRUD Read Barcode <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+// Validar busca por barcode na aba de produtos
+ipcMain.on('validar-busca-barcode', () => {
+    dialog.showMessageBox(products, {
+        type: 'warning',
+        title: 'Campo obrigatório',
+        message: 'Por favor, escaneie ou digite um código de barras',
+        buttons: ['OK']
+    })
+})
+
+
+
 
 // CRUD Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ipcMain.on('update-product', async (event, produto) => {

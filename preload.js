@@ -52,4 +52,11 @@ contextBridge.exposeInMainWorld('api', {
     // Api para abrir site na aba fornecedores
     abrirSite: (site) => ipcRenderer.send('url-site', site),
 
+    // Mostrar erro do site
+    mostrarErro: (mensagem) => ipcRenderer.send('mostrar-erro', mensagem),
+
+    // Barcode set
+    setBarcode: (callback) => ipcRenderer.on('set-barcode', callback),
+    validarBuscaBarcode: () => ipcRenderer.send('validar-busca-barcode'),
+
 })

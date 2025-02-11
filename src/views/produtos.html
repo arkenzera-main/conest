@@ -14,19 +14,11 @@
     <div class="container">
         <h1>Produtos</h1>
         <form id="frmProduct" class="mt-2 row g-3">
-            <!-- Buscar Produto -->
-            <div class="col-md-6">
-                <input type="text" class="form-control" id="searchProduct" maxlength="30" spellcheck="false">
-            </div>
-            <div class="col-md-6">
-                <button type="button" class="btn btn-primary" id="btnRead" onclick="buscarProduto()">Buscar por
-                    Nome</button>
-            </div>
-
             <!-- Buscar Produto Por Barcode -->
             <div class="col-md-8 mb-3">
                 <input type="text" class="form-control form-control-sm" id="searchBarcode" maxlength="30"
-                    spellcheck="false" placeholder="Digite ou escaneie o código de barras">
+                    spellcheck="false" placeholder="Digite ou escaneie o código de barras" autocomplete="off"
+                    autocorrect="off" autocapitalize="off">
             </div>
 
             <div class="col-md-4 mb-3">
@@ -38,6 +30,17 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Buscar Produto -->
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="searchProduct" maxlength="30" spellcheck="false">
+            </div>
+            <div class="col-md-6">
+                <button type="button" class="btn btn-primary" id="btnRead" onclick="buscarProduto()">Buscar por
+                    Nome</button>
+            </div>
+
+
 
             <hr class="mt-1 border border-primary border-1">
 
@@ -67,10 +70,10 @@
             </div>
 
             <!-- Imagem do Produto -->
-             <div class="col-md-7">
+            <div class="col-md-7">
                 <img src="../public/img/camera.png" alt="Imagem" id="productPreview">
                 <input type="file" id="imageProduct">
-             </div>
+            </div>
 
             <!-- Botões -->
             <div class="mt-5">

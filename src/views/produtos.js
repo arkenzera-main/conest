@@ -5,12 +5,32 @@
 
 const foco = document.getElementById('searchProduct')
 
+// Variavel para animação
+let isScanning = false
+
+
+// Funções para animação de scan do barcode
+document.getElementById('searchBarcode').addEventListener('input', function(e) {
+    if (this.value.length > 0 && !isScanning) {
+        isScanning = true
+        this.classList.add('scan-active')
+    }
+})
+
+document.getElementById('searchBarcode').addEventListener('blur', function() {
+    isScanning = false
+    this.classList.remove('scan-active')
+})
+
+
+
+
 //Mudar as propriedades do documento html ao iniciar a janela
 document.addEventListener('DOMContentLoaded', () => {
     btnCreate.disabled = true
     btnUpdate.disabled = true
     btnDelete.disabled = true
-    foco.focus()
+    document.getElementById('searchBarcode').focus()
 })
 
 // Função para manipular o evento da tecla Enter
@@ -25,6 +45,17 @@ function teclaEnter(event) {
 function restaurarEnter() {
     document.getElementById('frmProduct').removeEventListener('keydown', teclaEnter)
 }
+
+
+// Função para identificar o enter como listener na busca por código de barras
+document.getElementById('searchBarcode').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault()
+        e.stopPropagation() // Impede a propagação do evento
+        buscarProdutoPorBarcode()
+    }
+})
+
 
 // manipulando o evento (tecla Enter)
 document.getElementById('frmProduct').addEventListener('keydown', teclaEnter)
@@ -62,7 +93,7 @@ formProduto.addEventListener('submit', async (event) => {
         // Criar um objeto
         const produto = {
             idPro: idProduto.value,
-            nomeFor: nomeProduto.value,
+            nomePro: nomeProduto.value,
             barcodePro: barcodeProduto.value,
             precoPro: precoProduto.value,
         }
@@ -135,11 +166,11 @@ function buscarProduto() {
 // CRUD Read por Código de Barras >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 function buscarProdutoPorBarcode() {
     // Passo 1 (slide)
-    let barNome = document.getElementById('searchBarcode').value
+    let barNome = document.getElementById('searchBarcode').value.trim()
     //console.log(barNome)
     if (barNome === "") {
-        api.validarBusca() // Validar campo obrigatório
-        getElementById('searchBarcode').focus()
+        api.validarBuscaBarcode()  // Validar campo obrigatório
+        document.getElementById('searchBarcode').focus()
     } else {
         // Passo 2 (slide) - Enviar o pedido de busca do produto ao main
         api.buscarProdutoPorBarcode(barNome)
@@ -176,12 +207,12 @@ function buscarProdutoPorBarcode() {
     }
     api.setarCodigoProduto(() => {
         //setar o nome do produto       
-        let campoNome = document.getElementById('searchBarcode').value
-        document.getElementById('inputNameProduct').focus()
-        document.getElementById('inputNameProduct').value = campoNome
+        let campoCodigo = document.getElementById('searchBarcode').value
+        document.getElementById('inputBarcodeProduct').focus()
+        document.getElementById('inputBarcodeProduct').value = campoCodigo
         //limpar o campo de busca e remover o foco
-        getElementById('searchBarcode').value = ""
-        getElementById('searchBarcode').blur()
+        document.getElementById('searchBarcode').value = ""
+        document.getElementById('searchBarcode').blur()
         //liberar o botão adicionar
         btnCreate.disabled = false
         //restaurar o padrão da tecla Enter
@@ -207,5 +238,7 @@ api.resetarFormulario((args) => {
 function resetForm() {
     // Recarregar a página
     location.reload()
+    document.getElementById('searchBarcode').disabled = false
+    document.getElementById('searchBarcode').focus()
 }
 // Fim - Reset Form <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
