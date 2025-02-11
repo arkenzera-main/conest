@@ -836,6 +836,13 @@ ipcMain.on('search-barcode', async (event, barCode) => {
         console.log(error)
     }
 })
+
+
+// Setar Barcode
+ipcMain.on('set-barcode', (event, barCode) => {
+    // Setar o código de barras no campo correspondente
+    event.reply('set-barcode-reply', barCode)
+})
 // Fim CRUD Read Barcode <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 // Validar busca por barcode na aba de produtos

@@ -10,14 +10,14 @@ let isScanning = false
 
 
 // Funções para animação de scan do barcode
-document.getElementById('searchBarcode').addEventListener('input', function(e) {
+document.getElementById('searchBarcode').addEventListener('input', function (e) {
     if (this.value.length > 0 && !isScanning) {
         isScanning = true
         this.classList.add('scan-active')
     }
 })
 
-document.getElementById('searchBarcode').addEventListener('blur', function() {
+document.getElementById('searchBarcode').addEventListener('blur', function () {
     isScanning = false
     this.classList.remove('scan-active')
 })
@@ -48,7 +48,7 @@ function restaurarEnter() {
 
 
 // Função para identificar o enter como listener na busca por código de barras
-document.getElementById('searchBarcode').addEventListener('keydown', function(e) {
+document.getElementById('searchBarcode').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
         e.preventDefault()
         e.stopPropagation() // Impede a propagação do evento
@@ -166,59 +166,76 @@ function buscarProduto() {
 // CRUD Read por Código de Barras >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 function buscarProdutoPorBarcode() {
     // Passo 1 (slide)
-    let barNome = document.getElementById('searchBarcode').value.trim()
-    //console.log(barNome)
+    let barNome = document.getElementById('searchBarcode').value.trim();
     if (barNome === "") {
-        api.validarBuscaBarcode()  // Validar campo obrigatório
-        document.getElementById('searchBarcode').focus()
+        api.validarBuscaBarcode();  // Validar campo obrigatório
+        document.getElementById('searchBarcode').focus();
     } else {
         // Passo 2 (slide) - Enviar o pedido de busca do produto ao main
-        api.buscarProdutoPorBarcode(barNome)
+        api.buscarProdutoPorBarcode(barNome);
         // Passo 5 - Recebimento dos dados do produto
         api.renderizarBarcode((event, dadosBarcode) => {
             // teste de recebimento dos dados do produto
-            console.log(dadosBarcode)
+            console.log(dadosBarcode);
             // Passo 6 (slide) - Renderização dos dados dos produto no formulário
-            const barcodeRenderizado = JSON.parse(dadosBarcode)
-            arrayProduto = barcodeRenderizado
+            const barcodeRenderizado = JSON.parse(dadosBarcode);
+            arrayProduto = barcodeRenderizado;
             // teste para entendimento da lógica
-            console.log(arrayProduto)
-            // percorrer o array de produtos, extrair os dados e setar (preencher) os campos do formulário
-            arrayProduto.forEach((c) => {
-                document.getElementById('inputNameProduct').value = c.nomeProduto
-                document.getElementById('inputBarcodeProduct').value = c.barcodeProduto
-                document.getElementById('inputPriceProduct').value = c.precoProduto
-                document.getElementById('inputIdProduct').value = c._id
-                //limpar o campo de busca e remover o foco
-                document.getElementById('searchBarcode').value = ""
+            console.log(arrayProduto);
 
-                document.getElementById('searchBarcode').disabled = true
-                btnRead.disabled = true
-                btnCreate.disabled = true
+            if (arrayProduto.length > 0) {
+                // Se o produto for encontrado, preencher os campos do formulário
+                arrayProduto.forEach((c) => {
+                    document.getElementById('inputNameProduct').value = c.nomeProduto;
+                    document.getElementById('inputBarcodeProduct').value = c.barcodeProduto;
+                    document.getElementById('inputPriceProduct').value = c.precoProduto;
+                    document.getElementById('inputIdProduct').value = c._id;
+                    // Limpar o campo de busca e remover o foco
+                    document.getElementById('searchBarcode').value = "";
 
-                //foco.blur()
-                //liberar os botões editar e excluir
-                document.getElementById('btnUpdate').disabled = false
-                document.getElementById('btnDelete').disabled = false
-                //restaurar o padrão da tecla Enter
-                restaurarEnter()
-            })
-        })
+                    document.getElementById('searchBarcode').disabled = true;
+                    btnRead.disabled = true;
+                    btnCreate.disabled = true;
+
+                    // Liberar os botões editar e excluir
+                    document.getElementById('btnUpdate').disabled = false;
+                    document.getElementById('btnDelete').disabled = false;
+                    // Restaurar o padrão da tecla Enter
+                    restaurarEnter();
+                });
+            } else {
+                // Se o produto não for encontrado, perguntar ao usuário se deseja cadastrar um novo produto
+                dialog.showMessageBox({
+                    type: 'question',
+                    title: 'Produto não encontrado',
+                    message: 'Deseja cadastrar um novo produto com este código de barras?',
+                    buttons: ['Sim', 'Não']
+                }).then((result) => {
+                    if (result.response === 0) { // Se o usuário clicar em "Sim"
+                        // Preencher o campo de código de barras e habilitar o botão de adicionar
+                        document.getElementById('inputBarcodeProduct').value = barNome;
+                        document.getElementById('inputNameProduct').focus();
+                        btnCreate.disabled = false;
+                    } else {
+                        // Se o usuário clicar em "Não", limpar o campo de busca
+                        document.getElementById('searchBarcode').value = "";
+                        document.getElementById('searchBarcode').focus();
+                    }
+                });
+            }
+        });
     }
-    api.setarCodigoProduto(() => {
-        //setar o nome do produto       
-        let campoCodigo = document.getElementById('searchBarcode').value
-        document.getElementById('inputBarcodeProduct').focus()
-        document.getElementById('inputBarcodeProduct').value = campoCodigo
-        //limpar o campo de busca e remover o foco
-        document.getElementById('searchBarcode').value = ""
-        document.getElementById('searchBarcode').blur()
-        //liberar o botão adicionar
-        btnCreate.disabled = false
-        //restaurar o padrão da tecla Enter
-        restaurarEnter()
-    })
 }
+
+
+
+
+api.setarCodigoProduto((event, barCode) => {
+    // Setar o código de barras no campo correspondente
+    document.getElementById('inputBarcodeProduct').value = barCode
+    document.getElementById('inputNameProduct').focus()
+    btnCreate.disabled = false
+})
 
 // Fim do CRUD Read por Código de Barras <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
