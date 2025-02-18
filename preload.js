@@ -41,6 +41,9 @@ contextBridge.exposeInMainWorld('api', {
     deletarProduto: (idProduto) => ipcRenderer.send('delete-product', idProduto),
     setarNomeProduto: (args) => ipcRenderer.on('set-nameProduct', args),
 
+        // Invoke 
+    selecionarArquivo: () => ipcRenderer.invoke('open-file-dialog'),
+
     janelaRelatorios: () => ipcRenderer.send('open-reports'),
 
     resetarFormulario: (args) => ipcRenderer.on('reset-form', args),

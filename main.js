@@ -16,6 +16,8 @@ const fornecedorModel = require('./src/models/Fornecedores.js')
 // importação do Schema Produtos da camada model
 const produtoModel = require('./src/models/Produtos.js')
 
+// importação de biblioteca nativa JS para manipulação de arquivos
+const fs = require('fs')
 
 // Janela Principal
 let win
@@ -729,19 +731,101 @@ ipcMain.on('delete-supplier', async (event, idFornecedor) => {
 /*************** Produtos ******************/
 /******************************************/
 
+
+
+
 // CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// Obter o caminho da imagem ( executar o open dialog )
+ipcMain.handle('open-file-dialog', async () => {
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+        title: "Selecionar imagem",
+        properties: ['openFile'],
+        filters: [
+            {
+                name: 'Imagens',
+                extensions: ['png', 'jpg', 'jpeg']
+            }
+        ]
+    })
+    console.log(filePaths[0])
+    if (canceled === true || filePaths.length === 0) {
+        return null
+    } else {
+        return filePaths[0] // Retorna o caminho do arquivo
+        
+    }
+    
+})
+
+
+
+
 // Recebimento dos dados do formulário do produto
 ipcMain.on('new-product', async (event, produto) => {
-    // Teste de recebimento dos dados (Passo 2 - slide) Importante!
-    console.log(produto)
+    // Teste de recebimento dos dados do produto
+    console.log(produto) // Teste do passo 2 (recebimento do produto)
+    try {
+        //========================================= (imagens #1)
+        // Criar a pasta uploads se ela não existir
+        const uploadDir = path.join(__dirname, 'uploads') // __dirname é o caminho absoluto 
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir)
+        } 
 
-    // Passo 3 - slide (cadastrar os dados do banco de dados)
+        //========================================= (imagens #2)
+        // Gerar um nome único para o arquivo (evitar sobrescrever)
+        const fileName = `${Date.now()}_${path.basename(produto.caminhoImagemPro)}`
+        //console.log(fileName)
+        const uploads = path.join(uploadDir, fileName)
+
+        //========================================= (imagens #3)
+        // Copiar o arquivo de imagem para a pasta uploads
+        fs.copyFileSync(produto.caminhoImagemPro, uploads)
+
+        // Cadastrar o produto no banco de dados
+        const novoProduto = new produtoModel({
+            nomeProduto: produto.nomePro,
+            barcodeProduto: produto.barcodePro,
+            precoProduto: produto.precoPro,
+            caminhoImagemProduto: uploads // salvando o caminho correto no banco
+        })
+
+        await novoProduto.save()
+        
+         dialog.showMessageBox({
+            type: 'info',
+            title: 'Aviso',
+            message: "Produto Adicionado com Sucesso",
+            buttons: ['OK']
+        }).then((result) => {
+            if (result.response === 0) {
+                event.reply('reset-form')
+            }
+        })
+
+    } catch (error) {
+        console.log(error)
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /* // Passo 3 - slide (cadastrar os dados do banco de dados)
     try {
         // Criar um novo objeto usando a classe modelo
         const novoProduto = new produtoModel({
             nomeProduto: produto.nomePro,
             barcodeProduto: produto.barcodePro,
-            precoProduto: produto.precoPro
+            precoProduto: produto.precoPro,
+            caminhoImagemProduto: produto.caminhoImagemPro,
         })
         // A linha abaixo usa a biblioteca moongoose para salvar
         await novoProduto.save()
@@ -752,13 +836,17 @@ ipcMain.on('new-product', async (event, produto) => {
             title: 'Aviso',
             message: "Produto Adicionado com Sucesso",
             buttons: ['OK']
+        }).then((result) => {
+            if (result.response === 0) {
+                event.reply('reset-form')
+            }
         })
         // Enviar uma resposta para o renderizador resetar o formulário
-        event.reply('reset-form')
 
     } catch (error) {
         console.log(error)
     }
+        */
 })
 // Fim CRUD Create <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

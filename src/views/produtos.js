@@ -69,14 +69,34 @@ let idProduto = document.getElementById('inputIdProduct')
 let nomeProduto = document.getElementById('inputNameProduct')
 let barcodeProduto = document.getElementById('inputBarcodeProduct')
 let precoProduto = document.getElementById('inputPriceProduct')
+let caminhoImagemProduto = document.getElementById('pathImageProduct')
+let imagem = document.getElementById('productPreview')
+
+// Variável usada para armazenar o caminho da imagem
+let caminhoImagem 
 
 // CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// Solicitar ao maino o uso do explorador de arquivos e armazenar o caminho da imagem selecionada na variável caminhoImagem
+
+async function uploadImage() {
+    caminhoImagem = await api.selecionarArquivo()
+    console.log(caminhoImagem)
+    imagem.src = `file://${caminhoImagem}`
+}
+
+
+
+
+
+
+
+
 // Evento associado ao botão adicionar (quando o botão for pressionado)
 formProduto.addEventListener('submit', async (event) => {
     // Evitar o comportamento padrão de envio em um form
     event.preventDefault()
     // Teste importante! (fluxo dos dados)
-    // console.log(nomeProduto.value, barcodeProduto.value, precoProduto.value)
+    console.log(nomeProduto.value, barcodeProduto.value, precoProduto.value,caminhoImagem)
 
     // Passo 2 - slide (envio das informações para o main)
     // Estratégia para determinar se é um novo cadastro de produto ou a edição de um produto já existente
@@ -87,6 +107,7 @@ formProduto.addEventListener('submit', async (event) => {
             nomePro: nomeProduto.value,
             barcodePro: barcodeProduto.value,
             precoPro: precoProduto.value,
+            caminhoImagemPro: caminhoImagem,
         }
         api.novoProduto(produto)
     } else {
@@ -96,6 +117,7 @@ formProduto.addEventListener('submit', async (event) => {
             nomePro: nomeProduto.value,
             barcodePro: barcodeProduto.value,
             precoPro: precoProduto.value,
+            caminhoImagemPro: caminhoImagem.files[0].path,
         }
         api.editarProduto(produto)
     }
@@ -221,6 +243,12 @@ function buscarProdutoPorBarcode() {
                         document.getElementById('searchBarcode').value = "";
                         document.getElementById('searchBarcode').focus();
                     }
+                    api.setarCodigoProduto((event, barCode) => {
+                        // Setar o código de barras no campo correspondente
+                        document.getElementById('inputBarcodeProduct').value = barCode
+                        document.getElementById('inputNameProduct').focus()
+                        btnCreate.disabled = false
+                    })
                 });
             }
         });
@@ -230,12 +258,7 @@ function buscarProdutoPorBarcode() {
 
 
 
-api.setarCodigoProduto((event, barCode) => {
-    // Setar o código de barras no campo correspondente
-    document.getElementById('inputBarcodeProduct').value = barCode
-    document.getElementById('inputNameProduct').focus()
-    btnCreate.disabled = false
-})
+
 
 // Fim do CRUD Read por Código de Barras <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

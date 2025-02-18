@@ -45,7 +45,8 @@
             <hr class="mt-1 border border-primary border-1">
 
             <!-- ID do Produto -->
-            <div class="col-md-7" id="idProduct">
+            <div class="col-md-7">
+                <label for="inputIdProduct" class="form-label">ID</label>
                 <input class="form-control" type="text" id="inputIdProduct" placeholder="id">
             </div>
 
@@ -72,8 +73,13 @@
             <!-- Imagem do Produto -->
             <div class="col-md-7">
                 <img src="../public/img/camera.png" alt="Imagem" id="productPreview">
-                <input type="file" id="imageProduct">
             </div>
+
+            <!-- Upload de Imagem -->
+             <div class="col-12">
+                <input type="button" class="btn btn-secondary" value="Upload de Imagem" onclick="uploadImage()">
+             </div>
+
 
             <!-- Botões -->
             <div class="mt-5">

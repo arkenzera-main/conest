@@ -15,7 +15,7 @@ const produtoSchema = new Schema({
     precoProduto: {
         type: String
     },
-    imagemProduto: {
+    caminhoImagemProduto: {
         type: String
     },
 })
