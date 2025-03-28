@@ -3,11 +3,31 @@
  * clientes.js
  */
 
-const foco = document.getElementById('searchClient')
+/**
+ * Processo de renderização
+ * clientes.js
+ */
+
+const foco = document.getElementById('searchClient');
+
+// Função para desabilitar o campo de busca
+function desabilitarBuscaCliente() {
+    const searchClient = document.getElementById('searchClient');
+    searchClient.disabled = true;
+    searchClient.style.backgroundColor = '#f0f0f0'; // Feedback visual
+}
+
+// Função para habilitar o campo de busca
+function habilitarBuscaCliente() {
+    const searchClient = document.getElementById('searchClient');
+    searchClient.disabled = false;
+    searchClient.style.backgroundColor = ''; // Remove o feedback visual
+    searchClient.focus(); // Volta o foco para o campo
+}
 
 //Mudar as propriedades do documento html ao iniciar a janela
 document.addEventListener('DOMContentLoaded', () => {
-    btnCreate.disabled = true
+    //btnCreate.disabled = true
     btnUpdate.disabled = true
     btnDelete.disabled = true
     foco.focus()
@@ -48,7 +68,7 @@ let numeroCliente = document.getElementById('inputNumeroClient')
 let bairroCliente = document.getElementById('inputBairroClient')
 let cidadeCliente = document.getElementById('inputCidadeClient')
 let ufCliente = document.getElementById('inputUfClient')
-let telefoneCliente = document.getElementById('inputphoneClient')
+let telefoneCliente = document.getElementById('inputTelefoneClient')
 let cpfCliente = document.getElementById('inputCpfClient')
 let complementoCliente = document.getElementById('inputComplementoClient')
 
@@ -59,6 +79,9 @@ formCliente.addEventListener('submit', async (event) => {
     event.preventDefault()
         // Teste importante! (fluxo dos dados)
         / console.log(idCliente.value, nomeCliente.value, dddCliente.value, emailCliente.value)
+
+    // Desativa o campo de busca antes de enviar
+    desabilitarBuscaCliente()
 
     // Passo 2 - slide (envio das informações para o main)
     // Estratégia para determinar se é um novo cadastro de cliente ou a edição de um cliente já existente
@@ -77,9 +100,17 @@ formCliente.addEventListener('submit', async (event) => {
             telefoneCli: telefoneCliente.value,
             cpfCli: cpfCliente.value,
             complementoCli: complementoCliente.value
-
         }
-        api.novoCliente(cliente)
+        
+        try {
+            await api.novoCliente(cliente)
+            // Reativa o campo de busca após sucesso
+            habilitarBuscaCliente()
+        } catch (error) {
+            console.error("Erro ao criar cliente:", error)
+            // Reativa o campo mesmo em caso de erro
+            habilitarBuscaCliente()
+        }
     } else {
         // Criar um objeto
         const cliente = {
@@ -100,9 +131,7 @@ formCliente.addEventListener('submit', async (event) => {
         api.editarCliente(cliente)
     }
 })
-
 // Fim do CRUD Create/Update <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 
 // CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 function buscarCliente() {
@@ -137,18 +166,16 @@ function buscarCliente() {
                 document.getElementById('inputBairroClient').value = c.bairroCliente
                 document.getElementById('inputCidadeClient').value = c.cidadeCliente
                 document.getElementById('inputUfClient').value = c.ufCliente
-                document.getElementById('inputphoneClient').value = c.telefoneCliente
+                document.getElementById('inputTelefoneClient').value = c.telefoneCliente
                 document.getElementById('inputCpfClient').value = c.cpfCliente
                 document.getElementById('inputComplementoClient').value = c.complementoCliente
 
-                //limpar o campo de busca e remover o foco
+                //limpar o campo de busca e desativar
                 foco.value = ""
-
-                foco.disabled = true
+                desabilitarBuscaCliente()
                 btnRead.disabled = true
                 btnCreate.disabled = true
 
-                //foco.blur()
                 //liberar os botões editar e excluir
                 document.getElementById('btnUpdate').disabled = false
                 document.getElementById('btnDelete').disabled = false
@@ -163,13 +190,17 @@ function buscarCliente() {
         let campoNome = document.getElementById('searchClient').value
         document.getElementById('inputNameClient').focus()
         document.getElementById('inputNameClient').value = campoNome
-        //limpar o campo de busca e remover o foco
+        
+        //limpar e desativar o campo de busca
         foco.value = ""
-        foco.blur()
+        desabilitarBuscaCliente()
+        
         //liberar o botão adicionar
         btnCreate.disabled = false
+        
         //restaurar o padrão da tecla Enter
         restaurarEnter()
+        
         //Reativar o input das caixas de texto
         document.querySelectorAll('.bloqueio input').forEach(input => {
             input.disabled = false
@@ -184,8 +215,6 @@ function excluirCliente() {
     api.deletarCliente(idCliente.value) // Passo 1 do slide
 }
 // Fim do CRUD Delete <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
 
 // Função para preencher os dados de endereço automaticamente
 cepCliente.addEventListener('blur', async () => {
@@ -220,7 +249,6 @@ const dddMapping = {
     "RO": 69, // Rondônia
     "RR": 95, // Roraima
     "TO": 63, // Tocantins
-
     // Região Nordeste
     "AL": 82, // Alagoas
     "BA": 71, // Bahia
@@ -231,19 +259,16 @@ const dddMapping = {
     "PI": 86, // Piauí
     "RN": 84, // Rio Grande do Norte
     "SE": 79, // Sergipe
-
     // Região Centro-Oeste
     "DF": 61, // Distrito Federal
     "GO": 62, // Goiás
     "MT": 65, // Mato Grosso
     "MS": 67, // Mato Grosso do Sul
-
     // Região Sudeste
     "ES": 27, // Espírito Santo
     "MG": 31, // Minas Gerais
     "RJ": 21, // Rio de Janeiro
     "SP": 11, // São Paulo
-
     // Região Sul
     "PR": 41, // Paraná
     "RS": 51, // Rio Grande do Sul
@@ -300,23 +325,12 @@ function resetForm() {
 }
 // Fim - Reset Form <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-formCliente.addEventListener('submit', async (event) => {
-    event.preventDefault()
-    
-    if (!TestaCPF()) {
-        dialog.showMessageBox({
-            type: 'warning',
-            title: 'CPF Inválido',
-            message: 'Por favor, digite um CPF válido!',
-            buttons: ['OK']
-        })
-        return
-    }
+// Função relacionada ao CPF
+api.clearCpf(() => {
+    let campoCpf = document.getElementById('inputCpfClient');
+    campoCpf.value = ""; // Limpa o campo
+    campoCpf.focus(); // Foca no campo
+    campoCpf.classList.add('input-error'); // Adiciona a classe de erro
+    validarCPF(campoCpf); // Força a revalidação do CPF
+});
 
-    // Resto do código de submit...
-    if (idCliente.value === "") {
-        // Criar novo cliente
-    } else {
-        // Editar cliente
-    }
-})

@@ -3,15 +3,36 @@
  * fornecedores.js
  */
 
-const foco = document.getElementById('searchSupplier')
+/**
+ * Processo de renderização
+ * fornecedores.js
+ */
+
+const foco = document.getElementById('searchSupplier');
+
+// Função para desabilitar o campo de busca
+function desabilitarBuscaFornecedor() {
+    const searchSupplier = document.getElementById('searchSupplier');
+    searchSupplier.disabled = true;
+    searchSupplier.style.backgroundColor = '#f0f0f0'; // Feedback visual
+}
+
+// Função para habilitar o campo de busca
+function habilitarBuscaFornecedor() {
+    const searchSupplier = document.getElementById('searchSupplier');
+    searchSupplier.disabled = false;
+    searchSupplier.style.backgroundColor = ''; // Remove o feedback visual
+    searchSupplier.focus(); // Volta o foco para o campo
+}
 
 //Mudar as propriedades do documento html ao iniciar a janela
 document.addEventListener('DOMContentLoaded', () => {
     ///btnCreate.disabled = true
     btnUpdate.disabled = true
     btnDelete.disabled = true
+    btnUrl.disabled = true
     foco.focus()
-})
+})   
 
 // Função para manipular o evento da tecla Enter
 function teclaEnter(event) {
@@ -28,85 +49,6 @@ function restaurarEnter() {
 
 // manipulando o evento (tecla Enter)
 document.getElementById('frmSupplier').addEventListener('keydown', teclaEnter)
-
-
-let usuarioRemoveuHTTPS = false; // Flag para rastrear se o usuário apagou o HTTPS
-
-// Função acessar site >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-function acessarSite() {
-    let urlFornecedor = document.getElementById('inputSiteSupplier').value.trim();
-
-    // Validação rigorosa
-    if (!urlFornecedor) {
-        api.mostrarErro('URL não pode estar vazia')
-        return
-    }
-
-    try {
-        const urlObj = new URL(urlFornecedor)
-        if (!['http:', 'https:'].includes(urlObj.protocol)) {
-            api.mostrarErro('Protocolo inválido. Use HTTP/HTTPS.')
-            return
-        }
-
-        // Forçar HTTPS mesmo se o usuário digitar HTTP
-        if (urlObj.protocol === 'http:') {
-            urlObj.protocol = 'https:'
-            urlFornecedor = urlObj.href
-        }
-
-        api.abrirSite({ url: urlFornecedor })
-    } catch (error) {
-        api.mostrarErro('URL inválida. Formato correto: https://www.exemplo.com')
-    }
-}
-
-// Adicionar o https via javascript
-document.getElementById('inputSiteSupplier').addEventListener('input', function (e) {
-    const input = e.target;
-    const valor = input.value.trim();
-
-    // Verifica se o valor começa com https://
-    if (!valor.startsWith('https://')) {
-        // Se não começar, força o https://
-        input.value = 'https://' + valor.replace(/^https?:\/\//, '');
-    }
-
-    // Mantém o cursor no final
-    input.setSelectionRange(input.value.length, input.value.length);
-});
-
-document.getElementById('inputSiteSupplier').addEventListener('keydown', function (e) {
-    const input = e.target;
-    const valor = input.value;
-
-    // Impede a remoção do https://
-    if (e.key === 'Backspace' && valor.length <= 8) { // 8 = length de "https://"
-        e.preventDefault();
-    }
-
-    // Impede a navegação para antes do https://
-    if (e.key === 'ArrowLeft' && input.selectionStart <= 8) {
-        input.setSelectionRange(8, 8);
-        e.preventDefault();
-    }
-});
-
-document.getElementById('inputSiteSupplier').addEventListener('paste', function (e) {
-    e.preventDefault();
-    const texto = (e.clipboardData || window.clipboardData).getData('text');
-
-    // Remove qualquer protocolo existente e adiciona https://
-    const novoValor = 'https://' + texto.replace(/^https?:\/\//, '');
-    this.value = novoValor;
-
-    // Mantém o cursor no final
-    this.setSelectionRange(novoValor.length, novoValor.length);
-});
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
-
 
 // Array usado nos métodos para manipulação da estrutura de dados 
 let arrayFornecedor = []
@@ -135,29 +77,9 @@ formFornecedor.addEventListener('submit', async (event) => {
     // Teste importante! (fluxo dos dados)
     // console.log(nomeFornecedor.value, dddForncedor.value, emailFornecedor.value)
 
+    // Desativa o campo de busca antes de enviar
+    desabilitarBuscaFornecedor()
 
-    // Validar se o site é válido ou não
-    const siteValue = siteFornecedor.value.trim()
-    if (siteValue) {
-        try {
-            const url = new URL(siteValue)
-
-            // Verifica se o protocolo é válido
-            if (!['http:', 'https:'].includes(url.protocol)) {
-                api.mostrarErro('Protocolo inválido. Use HTTP ou HTTPS.')
-                return
-            }
-
-            // Verifica se o domínio é válido
-            if (!url.hostname.includes('.')) {
-                api.mostrarErro('Domínio inválido. Exemplo: www.exemplo.com')
-                return
-            }
-        } catch (error) {
-            api.mostrarErro('URL inválida. Formato correto: https://www.exemplo.com')
-            return
-        }
-    }
     // Passo 2 - slide (envio das informações para o main)
     // Estratégia para determinar se é um novo cadastro de fornecedor ou a edição de um fornecedor já existente
     if (idFornecedor.value === "") {
@@ -176,7 +98,16 @@ formFornecedor.addEventListener('submit', async (event) => {
             complementoFor: complementoFornecedor.value,
             telefoneFor: telefoneFornecedor.value
         }
-        api.novoFornecedor(fornecedor)
+        
+        try {
+            await api.novoFornecedor(fornecedor)
+            // Reativa o campo de busca após sucesso
+            habilitarBuscaFornecedor()
+        } catch (error) {
+            console.error("Erro ao criar fornecedor:", error)
+            // Reativa o campo mesmo em caso de erro
+            habilitarBuscaFornecedor()
+        }
     } else {
         // Criar um objeto
         const fornecedor = {
@@ -238,17 +169,17 @@ function buscarFornecedor() {
                 document.getElementById('inputCnpjSupplier').value = c.cpnjFornecedor
                 document.getElementById('inputComplementoSupplier').value = c.complementoFornecedor
                 document.getElementById('inputPhoneSupplier').value = c.telefoneFornecedor
-                //limpar o campo de busca e remover o foco
+                
+                //limpar e desativar o campo de busca
                 foco.value = ""
-
-                foco.disabled = true
+                desabilitarBuscaFornecedor()
                 btnRead.disabled = true
                 btnCreate.disabled = true
 
-                //foco.blur()
                 //liberar os botões editar e excluir
                 document.getElementById('btnUpdate').disabled = false
                 document.getElementById('btnDelete').disabled = false
+                document.getElementById('btnUrl').disabled = false
                 //restaurar o padrão da tecla Enter
                 restaurarEnter()
             })
@@ -260,11 +191,14 @@ function buscarFornecedor() {
         let campoNome = document.getElementById('searchSupplier').value
         document.getElementById('inputNameSupplier').focus()
         document.getElementById('inputNameSupplier').value = campoNome
-        //limpar o campo de busca e remover o foco
+        
+        //limpar e desativar o campo de busca
         foco.value = ""
-        foco.blur()
+        desabilitarBuscaFornecedor()
+        
         //liberar o botão adicionar
         btnCreate.disabled = false
+        
         //restaurar o padrão da tecla Enter
         restaurarEnter()
     })
@@ -380,6 +314,24 @@ cepFornecedor.addEventListener('blur', async () => {
     }
 })
 
+// Acessar site >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function acessarSite(){
+    let urlFornecedor = document.getElementById('inputSiteSupplier').value.trim();
+    
+    // Verifica se a URL começa com "https://", caso contrário, adiciona "https://"
+    if (!urlFornecedor.startsWith('http://') && !urlFornecedor.startsWith('https://')) {
+        urlFornecedor = 'https://' + urlFornecedor;  // Adiciona https:// automaticamente
+    }
+
+    // Agora, podemos enviar a URL corretamente para o MongoDB sem violar a validação do pattern.
+    const url = {
+        url: urlFornecedor
+    }
+
+    // Envia a URL ao servidor ou ao MongoDB através da API
+    api.abrirSite(url);
+}
+// Fim do acessar site <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 // Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 api.resetarFormulario((args) => {
@@ -387,10 +339,26 @@ api.resetarFormulario((args) => {
 })
 
 function resetForm() {
+    // Reativa o campo de busca antes de recarregar
+    habilitarBuscaFornecedor()
     // Recarregar a página
-
     location.reload()
-    document.getElementById('inputSiteSupplier').value = 'https://';
-    usuarioRemoveuHTTPS = false; // Reseta a flag
 }
 // Fim - Reset Form <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+// Função relacionada ao CNPJ
+api.clearCnpj(() => {
+    let campoCnpj = document.getElementById('inputCnpjSupplier');
+    let cnpjHelp = document.getElementById('cnpjHelp'); // Elemento da mensagem de validação
+
+    campoCnpj.value = ""; // Limpa o campo
+    campoCnpj.focus(); // Foca no campo
+    campoCnpj.classList.add('input-error'); // Adiciona a classe de erro
+
+    // Limpa a mensagem de validação
+    cnpjHelp.textContent = ""; // Remove o texto
+    cnpjHelp.style.color = ""; // Reseta a cor
+
+    validarCNPJ(campoCnpj); // Força a revalidação do CNPJ
+});

@@ -18,7 +18,7 @@ const dbConnect = async () => {
     }
 }
 
-// conectar
+// Conectar
 const conectar = async () => {
     if (isConnected === false) {
         try {
@@ -32,11 +32,11 @@ const conectar = async () => {
     }
 }
 
-// desconectar
+// Desconectar
 const desconectar = async () => {
     if (isConnected === true) {
         try {
-            // A linha encerra a conexão com o MongoDB
+            // A linha termina a conexão com o MongoDB
             await mongoose.disconnect(url)
             isConnected = false // sinalizar que o banco não está conectado
             console.log("MongoDB desconectado")
@@ -46,5 +46,5 @@ const desconectar = async () => {
     }
 }
 
-// exportar para o main as funções desejadas
+// Exportação para o main as funções desejadas
 module.exports = { dbConnect, desconectar }

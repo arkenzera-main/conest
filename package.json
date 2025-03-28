@@ -1,25 +1,24 @@
 {
   "name": "conest",
   "version": "1.0.0",
-  "description": "Sistema para gestão do estoque no comércio de bens e serviços.",
+  "description": "Sistema para gestão de estoque no comércio de bens e serviços.",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arkenzera-main/conest.git"
+    "url": "git+https://github.com/"
   },
-  "author": "Bruno Politi Romero",
+  "author": "PROCO PRÉ-HISTÓRICO",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/arkenzera-main/conest/issues"
+    "url": "https://github.com/"
   },
-  "homepage": "https://github.com/arkenzera-main/conest#readme",
-  "devDependencies": {
-    "electron": "^33.0.2"
-  },
+  "homepage": "https://github.com/",
   "dependencies": {
+    "electron": "^33.0.2",
+    "jspdf": "^3.0.1",
     "mongoose": "^8.8.1"
   }
 }

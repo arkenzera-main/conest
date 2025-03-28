@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' data:;">
     <title>Conest - Produtos</title>
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
@@ -14,71 +15,106 @@
     <div class="container">
         <h1>Produtos</h1>
         <form id="frmProduct" class="mt-2 row g-3">
+
             <!-- Buscar Produto Por Barcode -->
-            <div class="col-md-8 mb-3">
-                <input type="text" class="form-control form-control-sm" id="searchBarcode" maxlength="30"
-                    spellcheck="false" placeholder="Digite ou escaneie o código de barras" autocomplete="off"
-                    autocorrect="off" autocapitalize="off">
+            <div id="frmProduct" class="col-md-6">
+                <input type="text" class="form-control" id="searchBarcode" maxlength="30" spellcheck="false">
+            </div>
+            <div class="col-md-2">
+                <img src="../public/img/barcode.png" alt="barcode" id="productimgview">
+                <!--<button type="button" class="btn btn-info" id="btnRead" onclick="buscarProdutoPorBarcode()">Buscar Código</button>-->
             </div>
 
-            <div class="col-md-4 mb-3">
-                <div class="d-flex align-items-center gap-2">
-                    <button type="button" class="btn p-0 border-0 bg-transparent" onclick="buscarProdutoPorBarcode()"
-                        title="Buscar por código de barras" data-bs-toggle="tooltip">
-                        <img src="../public/img/barcode.png" alt="Ícone de código de barras"
-                            class="img-barcode-button hover-effect">
-                    </button>
-                </div>
-            </div>
 
             <!-- Buscar Produto -->
             <div class="col-md-6">
                 <input type="text" class="form-control" id="searchProduct" maxlength="30" spellcheck="false">
             </div>
             <div class="col-md-6">
-                <button type="button" class="btn btn-primary" id="btnRead" onclick="buscarProduto()">Buscar por
-                    Nome</button>
+                <button type="button" class="btn btn-primary" id="btnRead" onclick="buscarProduto()">Buscar</button>
             </div>
 
-
-
-            <hr class="mt-1 border border-primary border-1">
+            <hr class="mt-4 border border-secondary border -1">
 
             <!-- ID do Produto -->
-            <div class="col-md-7">
+            <div class="col-md-5" id="idProduct">
                 <label for="inputIdProduct" class="form-label">ID</label>
-                <input class="form-control" type="text" id="inputIdProduct" placeholder="id">
+                <input class="form-control" type="text" id="inputIdProduct">
             </div>
+            <!--placeholder="id"-->
 
             <!-- Nome do Produto -->
-            <div class="col-md-7">
+            <div class="col-md-5">
                 <label for="inputNameProduct" class="form-label">Produto</label>
                 <input class="form-control" type="text" id="inputNameProduct" spellcheck="false" maxlength="50"
                     required>
             </div>
 
             <!-- Barcode do Produto -->
-            <div class="col-md-7">
-                <label for="inputBarcodeProduct" class="form-label">Código de Barras</label>
+            <div class="col-md-5">
+                <label for="inputBarcodeProduct" class="form-label">Código de barras</label>
                 <input class="form-control" type="text" id="inputBarcodeProduct" spellcheck="false" maxlength="15"
                     required>
+                <small id="barcodeHelp" class="form-text"></small> <!-- Mensagem de erro/sucesso -->
             </div>
 
-            <!-- Preço do Produto -->
-            <div class="col-md-7">
+            <!-- Fornecedor -->
+            <div class="col-md-4">
+                <label for="selectSupplier" class="form-label">Fornecedor</label>
+                <select class="form-control" id="selectSupplier" required>
+                    <option value="">Carregando fornecedores...</option>
+                </select>
+            </div>
+
+            <!--Preço do Produto-->
+            <!--step="any" // para colocar casas decimais-->
+            <div class="col-md-2">
                 <label for="inputPriceProduct" class="form-label">Preço</label>
-                <input class="form-control" type="text" id="inputPriceProduct" spellcheck="false" maxlength="50">
+                <input class="form-control" type="number" id="inputPriceProduct" spellcheck="false" maxlength="50"
+                    required step="any">
             </div>
 
-            <!-- Imagem do Produto -->
-            <div class="col-md-7">
-                <img src="../public/img/camera.png" alt="Imagem" id="productPreview">
+            <!-- Data -->
+            <div class="col-md-2">
+                <label for="dataProduct" class="form-label">Data</label>
+                <input type="text" class="form-control" id="dataProduct" disabled>
+            </div>
+            <div class="col-md-3">
+                <label for="inputlocalproduct" class="form-label">Local de armazenamento</label>
+                <input type="text" class="form-control" id="inputlocalproduct">
             </div>
 
-            <!-- Upload de Imagem -->
-             <div class="col-12">
-                <input type="button" class="btn btn-secondary" value="Upload de Imagem" onclick="uploadImage()">
-             </div>
+            <!-- Quebra de linha -->
+            <div class="w-100 mt-1"></div>
+
+            <!-- Quantidade -->
+            <div class="col-md-3">
+                <label for="inputAmountProduct" class="form-label">Quantidade</label>
+                <input type="text" class="form-control" id="inputAmountProduct">
+            </div>
+
+            <!-- Unidade de medida -->
+            <div class="col-md-3">
+                <label for="selectUnit" class="form-label">Unidade</label>
+                <select class="form-control" id="selectUnit">
+                    <option value=""></option>
+                    <option value="un">un</option>
+                    <option value="pc">pc</option>
+                    <option value="cx">cx</option>
+                    <option value="kg">kg</option>
+                    <option value="cm">cm</option>
+                </select>
+            </div>
+
+
+            <!-- Imagem do produto -->
+            <div class="col-md-4">
+                <img src="../public/img/camera.png" alt="imagem" id="imageProductPreview">
+            </div>
+            <!--Upload de imagem-->
+            <div class="col-12">
+                <!--<input type="button" class="btn btn-secondary" value="Upload de imagem" onclick="uploadImage()">-->
+            </div>
 
 
             <!-- Botões -->
@@ -86,13 +122,15 @@
                 <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
                 <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
                 <button type="button" class="btn btn-danger" id="btnDelete" onclick="excluirProduto()">Excluir</button>
-                <button type="reset" class="btn" id="btnReset" onclick="resetForm()"></button>
+                <button type="button" class="btn btn-link ms-2" onclick="resetForm()">
+                    <img src="../public/img/clear.png" alt="Limpar" title="Limpar formulário" style="height: 24px;">
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="uploadImage()">Upload</button>
             </div>
 
         </form>
     </div>
     <script src="../public/js/bootstrap.min.js"></script>
-    <script src="../public/css/style.css"></script>
     <script src="produtos.js"></script>
 </body>
 

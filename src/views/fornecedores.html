@@ -22,7 +22,7 @@
             <div class="col-md-4">
                 <button type="button" class="btn btn-primary" id="btnRead" onclick="buscarFornecedor()">Buscar</button>
             </div>
-            <hr class="mt-4 border border-primary border -1">
+            <hr class="mt-4 border border-secondary border -1">
 
             <!-- ID do Fornecedor -->
             <div class="col-md-6" id="idSupplier">
@@ -30,82 +30,71 @@
             </div>
 
             <!-- Nome do Fornecedor -->
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label for="inputNameSupplier" class="form-label">Razão Social</label>
                 <input class="form-control" type="text" id="inputNameSupplier" spellcheck="false" maxlength="50"
                     required>
             </div>
 
-            <!-- Site do Fornecedor -->
-            <div class="col-md-4">
-                <label for="inputSiteSupplier" class="form-label">Site</label>
-                <input class="form-control" type="url" id="inputSiteSupplier" spellcheck="false" maxlength="100"  pattern="^(https:\/\/)[\w.-]+(?:\.[\w-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=]+$"
-                title="Formato: https://www.exemplo.com">
-                <button type="button" class="mt-2 btn btn-secondary" onclick="acessarSite()" id="botaoAcessarSite">Acessar site</button>
-            </div>
-
-            <!-- Novo campo: CNPJ --> <!--*****************************************************************-->
+            <!-- CNPJ do Fornecedor -->
             <div class="col-md-4">
                 <label for="inputCnpjSupplier" class="form-label">CNPJ</label>
-                <input class="form-control" type="text" id="inputCnpjSupplier" maxlength="9" required>
+                <input class="form-control" type="text" id="inputCnpjSupplier" maxlength="18" required>
+                <small id="cnpjHelp" class="form-text"></small> <!-- Mensagem de erro/sucesso -->
             </div>
 
-            <!-- Novo campo: CEP -->
-            <div class="col-md-4">
-                <label for="inputCepSupplier" class="form-label">CEP</label>
-                <input class="form-control" type="text" id="inputCepSupplier" maxlength="9" required>
-            </div>
+            <div class="site-cep-ddd-telefone-container row">
+                <!-- Site do Fornecedor -->
+                <div class="col-md-4">
+                    <label for="inputSiteSupplier" class="form-label">Site</label>
+                    <input class="form-control" type="text" id="inputSiteSupplier" spellcheck="false" maxlength="50">
+                    <button type="button" class="mt-2 btn btn-secondary" id="btnUrl" onclick="acessarSite()">Acessar
+                        site</button>
+                </div>
 
-            <!-- DDD do Fornecedor -->
-            <div class="col-md-2 col-3">
-                <label for="inputdddSupplier" class="form-label">DDD</label>
-                <input class="form-control" type="tel" id="inputdddSupplier" maxlength="2" required>
-            </div>
+                <!-- CEP -->
+                <div class="col-md-2">
+                    <label for="inputCepSupplier" class="form-label">CEP</label>
+                    <input class="form-control" type="text" id="inputCepSupplier" maxlength="9">
+                </div>
 
-            <!-- TELEFONE do fornecedor -->
-            <div class="col-md-4 col-9">
-                <label for="inputPhoneSupplier" class="form-label">Telefone</label>
-                <input class="form-control" type="tel" id="inputPhoneSupplier" spellcheck="false" maxlength="9"
-                    required>
+                <!-- DDD e Telefone -->
+                <div class="col-md-5 ddd-telefone-container">
+                    <div class="col-md-2">
+                        <label for="inputdddSupplier" class="form-label">Telefone</label>
+                        <input class="form-control" type="tel" id="inputdddSupplier" maxlength="2">
+                    </div>
+                    <div class="col-md-5">
+                        <label for="inputPhoneSupplier" class="form-label text-white">_</label>
+                        <input class="form-control" type="tel" id="inputPhoneSupplier" maxlength="9" required>
+                    </div>
+                </div>
             </div>
-
-            
 
             <!-- Novo campo: Logradouro -->
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label for="inputLogradouroSupplier" class="form-label">Logradouro</label>
-                <input class="form-control" type="text" id="inputLogradouroSupplier" required>
+                <input class="form-control" type="text" id="inputLogradouroSupplier">
             </div>
 
 
             <!-- Novo campo: Bairro -->
             <div class="col-md-4">
                 <label for="inputBairroSupplier" class="form-label">Bairro</label>
-                <input class="form-control" type="text" id="inputBairroSupplier" required>
+                <input class="form-control" type="text" id="inputBairroSupplier">
             </div>
 
             <!-- Novo campo: Cidade-->
             <div class="col-md-4">
                 <label for="inputCidadeSupplier" class="form-label">Cidade</label>
-                <input class="form-control" type="text" id="inputCidadeSupplier" required>
-            </div>
-
-            <!-- Novo campo: Número-->
-            <div class="col-md-4">
-                <label for="inputNumeroSupplier" class="form-label">Número</label>
-                <input class="form-control" type="text" id="inputNumeroSupplier" required>
-            </div>
-
-            <!-- Novo campo: Complemento--> <!--*****************************************************************-->
-            <div class="col-md-4">
-                <label for="inputComplementoSupplier" class="form-label">Complemento</label>
-                <input class="form-control" type="text" id="inputComplementoSupplier">
+                <input class="form-control" type="text" id="inputCidadeSupplier">
             </div>
 
             <!-- Novo campo: UF -->
-            <div class="col-md-2 col-3">
+            <div class="col-md-1">
                 <label for="inputUfSupplier" class="form-label">UF</label>
-                <select class="form-control" id="inputUfSupplier" required>
+                <select class="form-control" id="inputUfSupplier">
+                    <option value=""></option>
                     <option value="AC">AC</option>
                     <option value="AL">AL</option>
                     <option value="AP">AP</option>
@@ -136,19 +125,33 @@
                 </select>
             </div>
 
+            <!-- Novo campo: Número-->
+            <div class="col-md-2">
+                <label for="inputNumeroSupplier" class="form-label">Número</label>
+                <input class="form-control" type="number" id="inputNumeroSupplier">
+            </div>
+
+            <!-- Novo campo: Complemento-->
+            <div class="col-md-2">
+                <label for="inputComplementoSupplier" class="form-label">Complemento</label>
+                <input class="form-control" type="text" id="inputComplementoSupplier">
+            </div>
+
             <!-- Botões ao lado do campo UF com espaçamento -->
             <div class="col-md-6 mt-5 d-flex">
                 <button type="submit" class="btn btn-success ms-2" id="btnCreate">Adicionar</button>
                 <button type="submit" class="btn btn-warning ms-2" id="btnUpdate">Editar</button>
-                <button type="button" class="btn btn-danger ms-2" id="btnDelete" onclick="excluirFornecedor()">Excluir</button>
-                <button type="reset" class="btn ms-2" id="btnReset" onclick="resetForm()"></button>
+                <button type="button" class="btn btn-danger ms-2" id="btnDelete"onclick="excluirFornecedor()">Excluir</button>
+                <button type="button" class="btn btn-link ms-2" onclick="resetForm()">
+                    <img src="../public/img/clear.png" alt="Limpar" title="Limpar formulário" style="height: 24px;">
+                </button>
             </div>
 
         </form>
     </div>
     <script src="../public/js/bootstrap.min.js"></script>
-    <script src="../public/css/style.css"></script>
     <script src="fornecedores.js"></script>
+    <script src="../public/js/validarcpnj.js"></script>
 </body>
 
 </html>

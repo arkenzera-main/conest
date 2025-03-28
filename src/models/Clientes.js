@@ -1,12 +1,13 @@
-/*
-*   Modelo de dados (clientes)
-*/
+/**
+ * Modelo de Dados (Clientes)
+ */
 
-const {model, Schema} = require('mongoose')
+// Importação de bibliotecas
+const { model, Schema } = require('mongoose')
 
-//Criação da estrutura de dados
-const clienteSchema = new Schema({
-    nomeCliente:{
+// criação da estrutura de dados ("tabela") que será usada no banco
+const clienteSchema = new Schema ({
+    nomeCliente: {
         type: String
     },
     dddCliente: {
@@ -16,9 +17,6 @@ const clienteSchema = new Schema({
         type: String
     },
     cepCliente: {
-        type: String
-    },
-    dddCliente: {
         type: String
     },
     logradouroCliente: {
@@ -36,17 +34,19 @@ const clienteSchema = new Schema({
     ufCliente: {
         type: String
     },
-    complementoCliente: {
-        type: String
-    },
     telefoneCliente: {
         type: String
     },
     cpfCliente: {
+        type: String,
+        unique: true,
+        index: true,
+    },
+    complementoCliente: {
         type: String
     }
+},{versionKey: false})
 
-})
-
-//Para modificar o nome da coleção ("tabela"), basta modificar na linha abaixo o rótulo 'Clientes", sempre iniciando com letra maiúscula.
-module.exports = model('Clientes', clienteSchema) //Exportar para o main
+// Exportar para o arquivo main.js
+// Para modificar o nome da coleção ("tabela"), basta modificar na linha abaixo o rótulo 'Clientes', sempre iniciando com letra maiúscula
+module.exports = model('Clientes', clienteSchema)

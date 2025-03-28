@@ -24,7 +24,7 @@
             <div class="col-md-4">
                 <button type="button" class="btn btn-primary" id="btnRead" onclick="buscarCliente()">Buscar</button>
             </div>
-            <hr class="mt-4 border border-primary border -1">
+            <hr class="mt-4 border border-secondary border -1">
 
             <!-- ID do cliente -->
             <div class="col-md-6" id="idClient">
@@ -32,79 +32,74 @@
             </div>
 
             <!--Bloqueio do formulario inputs
-                <div class="bloqueio">-->
+            <div class="bloqueio">-->
 
             <!-- Nome do cliente -->
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label for="inputNameClient" class="form-label">Nome</label>
                 <input class="form-control" type="text" id="inputNameClient" spellcheck="false" maxlength="50" required>
             </div>
 
-            <!-- CPF do cliente -->
             <div class="col-md-4">
-                <label for="inputCpfClient" class="form-label">CPF</label>
-                <input class="form-control" type="text" id="inputCpfClient" spellcheck="false" maxlength="14" required
-                    onblur="TestaCPF()" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
-                    title="Digite um CPF válido no formato 000.000.000-00">
+                <label for="inputCpfClient" class="form-label">CPF <span class="text-danger"></span></label>
+                <input class="form-control" type="text" id="inputCpfClient" spellcheck="false" required maxlength="14"
+                    oninput="validarCPF(this)" onblur="validarCPF(this)">
+                <small id="cpfHelp" class="form-text"></small> <!-- Mensagem de erro/sucesso -->
             </div>
+            <!--ATTCNST-->
 
-            <!-- E-mail do cliente -->
-            <div class="col-md-4">
-                <label for="inputEmailClient" class="form-label">E-mail</label>
-                <input class="form-control" type="email" id="inputEmailClient" spellcheck="false" maxlength="50">
-            </div>
+            <div class="email-cep-ddd-telefone-container row">
+                <!-- E-mail -->
+                <div class="col-md-4">
+                    <label for="inputEmailClient" class="form-label">E-mail</label>
+                    <input class="form-control" type="email" id="inputEmailClient" spellcheck="false" maxlength="50"
+                        required>
+                </div>
 
-            <!-- CEP -->
-            <div class="col-md-4">
-                <label for="inputCepClient" class="form-label">CEP</label>
-                <input class="form-control" type="text" id="inputCepClient" maxlength="9" required>
-            </div>
+                <!-- CEP -->
+                <div class="col-md-2">
+                    <label for="inputCepClient" class="form-label">CEP</label>
+                    <input class="form-control" type="text" id="inputCepClient" maxlength="9">
+                </div>
 
-            <!-- DDD do cliente -->
-            <div class="col-md-2 col-3">
-                <label for="inputdddClient" class="form-label">DDD</label>
-                <input class="form-control" type="tel" id="inputdddClient" spellcheck="false" maxlength="2"
-                    placeholder="XX" required>
-            </div>
+                <!-- DDD e Telefone -->
+                <div class="col-md-5 ddd-telefone-container">
+                    <div class="col-md-2">
 
-            <!-- TELEFONE do cliente -->
-            <div class="col-md-4 col-9">
-                <label for="inputphoneClient" class="form-label">Telefone</label>
-                <input class="form-control" type="tel" id="inputphoneClient" spellcheck="false" maxlength="9" required>
+                        <label for="inputdddClient" class="form-label">Telefone</label>
+                        <input class="form-control" type="tel" id="inputdddClient" spellcheck="false" maxlength="2">
+                    </div>
+                    <div class="col-md-5">
+                        <label for="inputTelefoneClient" class="form-label text-white">_</label>
+                        <input class="form-control" type="text" id="inputTelefoneClient" spellcheck="false"
+                            maxlength="9" required>
+                    </div>
+                </div>
             </div>
 
             <!-- Logradouro -->
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label for="inputLogradouroClient" class="form-label">Logradouro</label>
-                <input class="form-control" type="text" id="inputLogradouroClient" required>
-            </div>
-
-            <!-- Número-->
-            <div class="col-md-4">
-                <label for="inputNumeroClient" class="form-label">Número</label>
-                <input class="form-control" type="number" id="inputNumeroClient" required>
-            </div>
-
-            <!-- Complemento-->
-            <div class="col-md-4">
-                <label for="inputComplementoClient" class="form-label">Complemento</label>
-                <input class="form-control" type="text" id="inputComplementoClient">
+                <input class="form-control" type="text" id="inputLogradouroClient">
             </div>
 
             <!-- Bairro -->
             <div class="col-md-4">
                 <label for="inputBairroClient" class="form-label">Bairro</label>
-                <input class="form-control" type="text" id="inputBairroClient" required>
+                <input class="form-control" type="text" id="inputBairroClient">
             </div>
+
+            <!-- cidade -->
             <div class="col-md-4">
                 <label for="inputCidadeClient" class="form-label">Cidade</label>
-                <input class="form-control" type="text" id="inputCidadeClient" required>
+                <input class="form-control" type="text" id="inputCidadeClient">
             </div>
 
             <!-- UF -->
-            <div class="col-md-2 col-3">
+            <div class="col-md-1">
                 <label for="inputUfClient" class="form-label">UF</label>
-                <select class="form-control" id="inputUfClient" required>
+                <select class="form-control" id="inputUfClient">
+                    <option value=""></option>
                     <option value="AC">AC</option>
                     <option value="AL">AL</option>
                     <option value="AP">AP</option>
@@ -134,23 +129,37 @@
                     <option value="TO">TO</option>
                 </select>
             </div>
+            <!-- Número-->
+            <div class="col-md-2">
+                <label for="inputNumeroClient" class="form-label">Número</label>
+                <input class="form-control" type="number" id="inputNumeroClient">
+            </div>
+
+            <!-- Complemento-->
+            <div class="col-md-2">
+                <label for="inputComplementoClient" class="form-label">Complemento</label>
+                <input class="form-control" type="text" id="inputComplementoClient">
+            </div>
+
+
+
             <!--</div> FIM DO BLOQUEIO-->
 
             <!-- Botões -->
             <div class="col-md-6 mt-5 d-flex">
                 <button type="submit" class="btn btn-success ms-2" id="btnCreate">Adicionar</button>
                 <button type="submit" class="btn btn-warning ms-2" id="btnUpdate">Editar</button>
-                <button type="button" class="btn btn-danger ms-2" id="btnDelete"
-                    onclick="excluirCliente()">Excluir</button>
-                <button type="reset" class="btn ms-2" id="btnReset" onclick="resetForm()"></button>
+                <button type="button" class="btn btn-danger ms-2" id="btnDelete" onclick="excluirCliente()">Excluir</button>
+                <button type="button" class="btn btn-link ms-2" onclick="resetForm()">
+                    <img src="../public/img/clear.png" alt="Limpar" title="Limpar formulário" style="height: 24px;">
+                </button>
             </div>
 
         </form>
     </div>
     <script src="../public/js/bootstrap.min.js"></script>
-    <script src="../public/css/style.css"></script>
     <script src="clientes.js"></script>
-    <script src="../public/js/validacpf.js"></script>
+    <script src="../public/js/validarcpf.js"></script>
 </body>
 
 </html>
